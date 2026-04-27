@@ -1,8 +1,10 @@
 <?php
 $players = [
-    1 => ['ABK', 'APK', 'GUIIIZERA', 'GUSMA1', 'MAX', 'TAROTO','KUH', 'KVARA', 'LEOZOX', 'POWERZIN', 'PDZIKA'],
-    2 => ['BAIANO', 'FOFÃO', 'GRIMM', 'JONAS', 'LEVI', 'LULU', 'POTI', 'TODDY', 'XAUS','FALKES', 'LEE', 'PIXELCOPATA', 'PREDRAZA', 'SANTIAGO', 'NEGOTRUFA'],
-    3 => ['AVESTRUZ', 'CARAMELO', 'JV', 'LULA', 'KABAL', 'MARKEZ', 'PANCO','MOREL', 'PESCADOR'],
+    1 => ['ABK', 'APK', 'GUIIIZERA', 'GUSMA1', 'MAX', 'TAROTO', 'KVARA', ],
+    2 => ['PDZIKA', 'BAIANO', 'LEOZOX', 'KUSH', 'LEVI', 'LULU', 'POWERZIN', 'FOFÃO','TODDY'],
+    3 => ['XAUS', 'JONAS', 'SANTIAGO', 'NEGOTRUFA', 'GRIMM', 'PREDRAZA', 'JOTAV'],
+    4 => ['JV (PUTIFERO)', 'PIXEL', 'FALKES','LEE', 'MOREL', 'AVESTRUZ' ],
+    5 => ['PESCADOR', 'LULA', 'CARAMELO','MARKEZ', 'KABAL', 'PANCO'],
 ];
 
 foreach ($players as &$rankList) {
@@ -14,6 +16,8 @@ $rankLabels = [
     1 => ['label' => 'RANK 1', 'icon' => '🔥'],
     2 => ['label' => 'RANK 2', 'icon' => '⚡'],
     3 => ['label' => 'RANK 3', 'icon' => '🎯'],
+    4 => ['label' => 'RANK 4', 'icon' => '🧨'],
+    5 => ['label' => 'RANK 5', 'icon' => '🔫'],
 ];
 
 $error = '';
@@ -78,8 +82,15 @@ $rankColors = [
 <body>
 <div class="container">
   <header>
-    <h1>⚡ SORTEIO DE TIMES</h1>
+    <button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio.php'">
+  Voltar
+</button>
+<button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio_de_mapas.html'">
+  Sortear Mapas
+</button>
+    <h1>⚡ SORTEIO DE MIX ⚡</h1>
     <p>Selecione 10 jogadores para gerar dois times equilibrados</p>
+    
   </header>
 
   <?php if ($error): ?>
@@ -161,6 +172,7 @@ $rankColors = [
   </div>
   <?php endif; ?>
 </div>
+
 
 <script>
 function updateCounter(checkbox) {
