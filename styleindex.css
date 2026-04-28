@@ -293,4 +293,188 @@ p {
   margin-top: 1rem;
 }
 
+#pinhata-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* PINHATA */
+.pinhata {
+  position: absolute;
+  top: -150px;
+  width: 110px;
+  text-align: center;
+  animation: cair linear forwards;
+}
+
+/* efeito de corda + balanço */
+.pinhata-inner {
+  animation: balancar 2s ease-in-out infinite;
+}
+
+.pinhata img {
+  width: 100%;
+}
+
+.nome {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 6px #000;
+  margin-top: -10px;
+}
+
+/* QUEDA */
+@keyframes cair {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+/* BALANÇO REALISTA */
+@keyframes balancar {
+  0% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+  100% { transform: rotate(-8deg); }
+}
+
+/* CONFETE */
+.confete {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  opacity: 0.9;
+  animation: explodir 1s ease-out forwards;
+}
+
+@keyframes explodir {
+  to {
+    transform: translate(var(--x), var(--y)) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.mensagem-final {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-size: 42px;
+  font-weight: 900;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 20px #a855f7, 0 0 40px #7c3aed;
+  opacity: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* animação explosiva */
+.mensagem-final.ativa {
+  animation: explodirTexto 1.2s ease-out forwards;
+}
+
+@keyframes explodirTexto {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* FUNDO ESCURO */
+.overlay-escuro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  z-index: 9998;
+  pointer-events: none;
+  transition: background 0.6s ease;
+}
+
+.overlay-escuro.ativo {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+/* MENSAGEM TURBINADA */
+.mensagem-final {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-size: 48px;
+  font-weight: 900;
+  text-align: center;
+  color: #fff;
+  opacity: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* ANIMAÇÃO COMPLETA */
+.mensagem-final.ativa {
+  animation: entradaZoom 1s ease-out forwards, glowPulse 2s infinite;
+}
+
+/* ZOOM IN */
+@keyframes entradaZoom {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* GLOW PULSANDO */
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 10px #a855f7, 0 0 20px #7c3aed;
+  }
+  50% {
+    text-shadow: 0 0 25px #c084fc, 0 0 50px #a855f7;
+  }
+  100% {
+    text-shadow: 0 0 10px #a855f7, 0 0 20px #7c3aed;
+  }
+}
+
+/* TREMER TELA */
+.tremor {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, 5px); }
+  50% { transform: translate(5px, -5px); }
+  75% { transform: translate(-3px, 3px); }
+  100% { transform: translate(0, 0); }
+}
+
 
