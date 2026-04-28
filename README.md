@@ -1,4 +1,7 @@
-<img width="1901" height="902" alt="image" src="https://github.com/user-attachments/assets/99fe70c2-2558-400e-9c08-a6b14708a8ec" />
+<img width="1895" height="907" alt="image" src="https://github.com/user-attachments/assets/85f26e65-7f59-4085-ad8a-d5890b7ec2c0" />
+<img width="1907" height="905" alt="image" src="https://github.com/user-attachments/assets/b4b3a9dc-40e7-4fa5-9229-1ef56d4b2694" />
+<img width="1899" height="911" alt="image" src="https://github.com/user-attachments/assets/6525512c-5d0a-4173-b15e-0234f3fdb188" />
+
 🎯 Sistema de Sorteio 5x5 para Mix de CS
 🔗 https://familiamixgc.ct.ws/
 
