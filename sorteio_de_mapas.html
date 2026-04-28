@@ -1,121 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorteio de Mapas</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sorteio de Mapas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="sorteio-wrap">
+      <div class="sorteio-title">
+        <!-- BOTÕES DE NAVEGAÇÃO -->
 
-<div class="sorteio-wrap">
-  <div class="sorteio-title">
-    <center>
-    <button
-      type="button"
-      class="btn btn-ghost"
-      onclick="window.location.href = 'sorteio.php'"
-    >
-      Voltar
-    </button>
-    </center>
+        <center>
+          <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="window.location.href = 'index.html'"
+          >
+            Home
+          </button>
 
-    <h1><span class="icon"></span> SORTEIO DE MAPAS</h1>
-  </div>
-  <p class="sorteio-subtitle">
-    Selecione os mapas disponíveis para sortear o próximo
-  </p>
+          <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="window.location.href = 'sorteio.php'"
+          >
+            Sorteio de Times
+          </button>
 
-  <div class="result-panel" id="result-panel">
-    <div class="result-title">Mapa Sorteado</div>
-    <div class="result-maps" id="result-maps"></div>
-  </div>
+          <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="window.location.href = 'sorteio.php'"
+          >
+            Voltar
+          </button>
+        </center>
 
-  <div class="sorteio-header">
-    <div class="selected-count">
-      Mapas selecionados<br />
-      <strong id="count">0</strong><span> / 11</span>
+        <h1><span class="icon"></span> SORTEIO DE MAPAS</h1>
+      </div>
+      <p class="sorteio-subtitle">
+        Selecione os mapas disponíveis para sortear o próximo
+      </p>
+
+      <div class="result-panel" id="result-panel">
+        <div class="result-title">Mapa Sorteado</div>
+        <div class="result-maps" id="result-maps"></div>
+      </div>
+
+      <div class="sorteio-header">
+        <div class="selected-count">
+          Mapas selecionados<br />
+          <strong id="count">0</strong><span> / 11</span>
+        </div>
+        <div class="header-btns">
+          <button class="btn btn-ghost" onclick="clearAll()">Limpar</button>
+          <button
+            class="btn btn-primary"
+            id="btn-sort"
+            onclick="sortear()"
+            disabled
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            SORTEAR MAPA
+          </button>
+        </div>
+      </div>
+
+      <div class="maps-grid" id="maps-grid"></div>
     </div>
-    <div class="header-btns">
-      
-      <button class="btn btn-ghost" onclick="clearAll()">Limpar</button>
-      <button class="btn btn-primary" id="btn-sort" onclick="sortear()" disabled>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
-        SORTEAR MAPA
-      </button>
-    </div>
-  </div>
 
-  <div class="maps-grid" id="maps-grid"></div>
+    <script>
+      const maps = [
+        {
+          name: "Mirage",
+          img: "https://app.skin.land/blogfiles/eoY6l7CRe0P2Zynln0IsLH4BPdCIif5R8Wqj4HD4.png",
+        },
+        {
+          name: "Inferno",
+          img: "https://tradeit.gg/blog/wp-content/uploads/2023/07/image-22.webp",
+        },
+        {
+          name: "Dust II",
+          img: "https://tradeit.gg/blog/wp-content/uploads/2023/07/image-24-1024x576.webp",
+        },
+        {
+          name: "Nuke",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGiYY0W16voIa1r_8EbkbkvQRjgKUEOMIwkg&s",
+        },
+        {
+          name: "Overpass",
+          img: "https://preview.redd.it/here-are-some-more-cs2-maps-to-look-at-v0-5k76lkapek5b1.jpg?width=640&crop=smart&auto=webp&s=c3e4930a6d05ca8044cfe8e2b2f106a9898788cd",
+        },
+        {
+          name: "Vertigo",
+          img: "https://cs.money/blog/wp-content/uploads/sites/2/2023/07/vertigo.jpg",
+        },
+        {
+          name: "Ancient",
+          img: "https://assets.gamearena.gg/wp-content/uploads/2023/11/21084503/ancient-cs2.jpg",
+        },
+        {
+          name: "Anubis",
+          img: "https://img-cdn.hltv.org/gallerypicture/t1kgEuQxHuERdwsQUSnn_J.jpg?ixlib=java-2.1.0&w=1200&s=500213104f8aed24a009bac86526082f",
+        },
+        {
+          name: "Train",
+          img: "https://img-cdn.hltv.org/gallerypicture/NgeD50QLwAelmAEmVuigPs.png?ixlib=java-2.1.0&w=1200&s=c1b9181b40d92c22def72be504190055",
+        },
+        {
+          name: "Cache",
+          img: "https://images.steamusercontent.com/ugc/2397691894753915701/B2E571360CB344CFBD8E1039D889461080557BD9/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+        },
+        {
+          name: "Cobblestone",
+          img: "https://images.steamusercontent.com/ugc/2396566628393664695/2E0B91D604EBB75D137A12DB87ED38336171C03A/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+        },
+      ];
 
-  
-</div>
+      const selected = new Set();
 
-<script>
-  const maps = [
-    {
-      name: "Mirage",
-      img: "https://app.skin.land/blogfiles/eoY6l7CRe0P2Zynln0IsLH4BPdCIif5R8Wqj4HD4.png",
-    },
-    {
-      name: "Inferno",
-      img: "https://tradeit.gg/blog/wp-content/uploads/2023/07/image-22.webp",
-    },
-    {
-      name: "Dust II",
-      img: "https://tradeit.gg/blog/wp-content/uploads/2023/07/image-24-1024x576.webp",
-    },
-    {
-      name: "Nuke",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGiYY0W16voIa1r_8EbkbkvQRjgKUEOMIwkg&s",
-    },
-    {
-      name: "Overpass",
-      img: "https://preview.redd.it/here-are-some-more-cs2-maps-to-look-at-v0-5k76lkapek5b1.jpg?width=640&crop=smart&auto=webp&s=c3e4930a6d05ca8044cfe8e2b2f106a9898788cd",
-    },
-    {
-      name: "Vertigo",
-      img: "https://cs.money/blog/wp-content/uploads/sites/2/2023/07/vertigo.jpg",
-    },
-    {
-      name: "Ancient",
-      img: "https://assets.gamearena.gg/wp-content/uploads/2023/11/21084503/ancient-cs2.jpg",
-    },
-    {
-      name: "Anubis",
-      img: "https://img-cdn.hltv.org/gallerypicture/t1kgEuQxHuERdwsQUSnn_J.jpg?ixlib=java-2.1.0&w=1200&s=500213104f8aed24a009bac86526082f",
-    },
-    {
-      name: "Train",
-      img: "https://img-cdn.hltv.org/gallerypicture/NgeD50QLwAelmAEmVuigPs.png?ixlib=java-2.1.0&w=1200&s=c1b9181b40d92c22def72be504190055",
-    },
-    {
-      name: "Cache",
-      img: "https://images.steamusercontent.com/ugc/2397691894753915701/B2E571360CB344CFBD8E1039D889461080557BD9/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-    },
-    {
-      name: "Cobblestone",
-      img: "https://images.steamusercontent.com/ugc/2396566628393664695/2E0B91D604EBB75D137A12DB87ED38336171C03A/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
-    },
-  ];
-
-  const selected = new Set();
-
-  function render() {
-    const grid = document.getElementById("maps-grid");
-    grid.innerHTML = maps
-      .map(
-        (m, i) => `
+      function render() {
+        const grid = document.getElementById("maps-grid");
+        grid.innerHTML = maps
+          .map(
+            (m, i) => `
     <div class="map-card ${selected.has(i) ? "selected" : ""}" onclick="toggle(${i})">
       ${
         m.img
@@ -130,37 +148,36 @@
       </div>
     </div>
   `,
-      )
-      .join("");
-    document.getElementById("count").textContent = selected.size;
-    document.getElementById("btn-sort").disabled = selected.size < 1;
-  }
+          )
+          .join("");
+        document.getElementById("count").textContent = selected.size;
+        document.getElementById("btn-sort").disabled = selected.size < 1;
+      }
 
-  function toggle(i) {
-    if (selected.has(i)) selected.delete(i);
-    else selected.add(i);
-    document.getElementById("result-panel").classList.remove("show");
-    render();
-  }
+      function toggle(i) {
+        if (selected.has(i)) selected.delete(i);
+        else selected.add(i);
+        document.getElementById("result-panel").classList.remove("show");
+        render();
+      }
 
-  function clearAll() {
-    selected.clear();
-    document.getElementById("result-panel").classList.remove("show");
-    render();
-  }
+      function clearAll() {
+        selected.clear();
+        document.getElementById("result-panel").classList.remove("show");
+        render();
+      }
 
-  function sortear() {
-    if (selected.size === 0) return;
-    const pool = [...selected];
-    const winner = pool[Math.floor(Math.random() * pool.length)];
-    const panel = document.getElementById("result-panel");
-    const res = document.getElementById("result-maps");
-    res.innerHTML = `<div class="result-map-badge winner">${maps[winner].name}</div>`;
-    panel.classList.add("show");
-  }
+      function sortear() {
+        if (selected.size === 0) return;
+        const pool = [...selected];
+        const winner = pool[Math.floor(Math.random() * pool.length)];
+        const panel = document.getElementById("result-panel");
+        const res = document.getElementById("result-maps");
+        res.innerHTML = `<div class="result-map-badge winner">${maps[winner].name}</div>`;
+        panel.classList.add("show");
+      }
 
-  render();
-</script>
-
-</body>
+      render();
+    </script>
+  </body>
 </html>

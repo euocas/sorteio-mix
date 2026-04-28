@@ -1,0 +1,247 @@
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Barlow:wght@400;500;600&display=swap");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+.gc-wrap {
+  background: #0f0f14;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.gc-bg-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 300px;
+  background: radial-gradient(
+    ellipse,
+    rgba(139, 92, 246, 0.18) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.gc-logo-badge {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.5);
+  letter-spacing: 1px;
+}
+
+.gc-welcome {
+  font-family: "Barlow", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #a855f7;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.gc-title {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.gc-title span {
+  color: #c084fc;
+}
+
+.gc-subtitle {
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.gc-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.gc-card {
+  flex: 1;
+  background: #18181f;
+  border: 1px solid #2a2a38;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.gc-card-img {
+  width: 100%;
+  height: 90px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gc-card-img.teams {
+  background: linear-gradient(135deg, #1e1b3a 0%, #2d1f4a 100%);
+}
+
+.gc-card-img.maps {
+  background: linear-gradient(135deg, #0d2a1e 0%, #1a3d2b 100%);
+}
+
+.gc-card-label {
+  font-family: "Barlow", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.gc-btn {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s;
+}
+
+.gc-btn:active {
+  transform: scale(0.97);
+}
+
+.gc-btn.teams {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+}
+
+.gc-btn.teams:hover {
+  box-shadow: 0 4px 24px rgba(139, 92, 246, 0.55);
+}
+
+.gc-btn.maps {
+  background: linear-gradient(135deg, #065f46, #10b981);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.gc-btn.maps:hover {
+  box-shadow: 0 4px 24px rgba(16, 185, 129, 0.5);
+}
+
+.gc-divider {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2a2a38, transparent);
+  margin-bottom: 1.5rem;
+}
+
+.gc-discord-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #5865f2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.gc-discord-btn:hover {
+  background: #4752c4;
+}
+.gc-discord-btn:active {
+  transform: scale(0.97);
+}
+
+.gc-discord-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+  flex-shrink: 0;
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float linear infinite;
+  opacity: 0.15;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(-400px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Crossed swords SVG illustration */
+.sword-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+.map-icon {
+  width: 48px;
+  height: 48px;
+  opacity: 0.9;
+}
