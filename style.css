@@ -352,3 +352,35 @@ h1,
 .result-map-badge.winner {
   text-align: center;
 }
+
+.copy {
+  margin-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.copy footer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copy footer p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+
+.copy footer a {
+  color: #a855f7;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.copy footer a:hover {
+  text-decoration: underline;
+}

@@ -216,6 +216,11 @@ $rankColors = [
     document.getElementById('selCount').textContent =
       document.querySelectorAll('input[type="checkbox"]:checked').length;
   </script>
+  <div class="copy">
+    <footer>
+      <p>Desenvolvido por <a href="https://github.com/euocas" target="_blank">👾 PIXELCOPATA</a></p>
+    </footer>
+  </div>
 </body>
 
 </html>
