@@ -1,10 +1,12 @@
 <img width="1901" height="902" alt="image" src="https://github.com/user-attachments/assets/99fe70c2-2558-400e-9c08-a6b14708a8ec" />
 🎯 Sistema de Sorteio 5x5 para Mix de CS
+🔗 https://familiamixgc.ct.ws/
+
 📌 Sobre o Projeto
 
 Este projeto foi desenvolvido para automatizar o sorteio de partidas 5x5 em um servidor de Discord voltado para jogadores de Counter-Strike (CS).
 
-A ferramenta permite selecionar 10 jogadores e, a partir disso, realizar um sorteio inteligente que distribui os participantes em dois times equilibrados, levando em consideração o nível (rank) de cada jogador.
+A ferramenta permite selecionar 10 jogadores e, a partir disso, realizar um sorteio inteligente que distribui os participantes em dois times equilibrados, levando em consideração o nível (rank) de cada jogador, também é possível fazer o sorteio dos Mapas.
 
 O objetivo principal é garantir partidas mais justas e competitivas, evitando desequilíbrios entre os times.
 
@@ -20,7 +22,6 @@ A divisão busca manter o balanceamento de skill entre as equipes.
 HTML → Estrutura da interface
 CSS → Estilização e layout
 PHP → Lógica de sorteio e processamento
-JavaScript (básico) → Interações simples na tela
 IA → Auxílio na criação e estruturação do projeto
 🎮 Contexto de Uso
 
@@ -36,7 +37,6 @@ O sistema foi criado para uso em um ambiente de mix casual/competitivo dentro de
 /projeto
 │── index.php
 │── style.css
-│── script.js
 │── /assets
 🧠 Sobre o Uso de IA
 
@@ -52,6 +52,4 @@ Otimização da solução
 💾 Banco de dados para histórico de partidas
 👤 Login de usuários
 📈 Estatísticas de desempenho
-📄 Licença
 
-Este projeto é de uso livre para fins de estudo e melhoria.
