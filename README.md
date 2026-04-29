@@ -81,14 +81,10 @@ Feedback visual em tempo real
 👤 Sistema de login de usuários
 📈 Estatísticas individuais de jogadores
 🤖 Matchmaking automático baseado em skill
+
 ⭐ Créditos
 
 Desenvolvido com auxílio de Inteligência Artificial, contribuindo para:
-
-Estruturação do código
-Lógica de balanceamento
-Organização do sistema
-Otimização geral do projeto
 
 Estruturação do código
 Lógica de balanceamento
