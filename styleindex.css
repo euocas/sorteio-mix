@@ -477,4 +477,15 @@ p {
   100% { transform: translate(0, 0); }
 }
 
+/* saída suave */
+.mensagem-final.saindo {
+  animation: sairMensagem 0.6s ease forwards;
+}
+
+@keyframes sairMensagem {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
 
