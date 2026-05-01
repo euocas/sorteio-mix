@@ -34,7 +34,8 @@
    BASE
 ========================= */
 body {
-  background: var(--bg);
+  background: url('img/wallpaper-index.png') no-repeat center center fixed;
+  background-size: cover;
   color: var(--text);
   font-family: "Exo 2", "Segoe UI", system-ui, sans-serif;
   min-height: 100vh;
