@@ -385,3 +385,68 @@ h1,
 .copy footer a:hover {
   text-decoration: underline;
 }
+
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.3s ease;
+  z-index: 9998;
+}
+
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.result-panel {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) scale(0.9);
+
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 0.3s ease;
+}
+
+.result-panel.show {
+  opacity: 1;
+  visibility: visible;
+
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.result-panel {
+  background: #111827;
+  padding: 24px;
+  border-radius: 16px;
+  min-width: 550px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+}
+
+.result-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.result-map-badge {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+}

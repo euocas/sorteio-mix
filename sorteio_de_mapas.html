@@ -9,6 +9,14 @@
   <body>
     <div class="sorteio-wrap">
       <div class="sorteio-title">
+
+        <div class="overlay" id="overlay"></div>
+
+<div class="result-panel" id="result-panel">
+  <div class="result-title">Mapa Sorteado</div>
+  <div class="result-maps" id="result-maps"></div>
+</div>
+
         <!-- BOTÕES DE NAVEGAÇÃO -->
 
         <center>
@@ -43,10 +51,13 @@
         Selecione os mapas disponíveis para sortear o próximo
       </p>
 
-      <div class="result-panel" id="result-panel">
+
+
+      
+      <!-- <div class="result-panel" id="result-panel">
         <div class="result-title">Mapa Sorteado</div>
         <div class="result-maps" id="result-maps"></div>
-      </div>
+      </div> -->
 
       <div class="sorteio-header">
         <div class="selected-count">
@@ -155,29 +166,58 @@
       }
 
       function toggle(i) {
-        if (selected.has(i)) selected.delete(i);
-        else selected.add(i);
-        document.getElementById("result-panel").classList.remove("show");
-        render();
-      }
+  if (selected.has(i)) selected.delete(i);
+  else selected.add(i);
 
-      function clearAll() {
-        selected.clear();
-        document.getElementById("result-panel").classList.remove("show");
-        render();
-      }
+  document.getElementById("result-panel").classList.remove("show");
+  document.getElementById("overlay").classList.remove("show");
 
-      function sortear() {
-        if (selected.size === 0) return;
-        const pool = [...selected];
-        const winner = pool[Math.floor(Math.random() * pool.length)];
-        const panel = document.getElementById("result-panel");
-        const res = document.getElementById("result-maps");
-        res.innerHTML = `<div class="result-map-badge winner">${maps[winner].name}</div>`;
-        panel.classList.add("show");
-      }
+  render();
+}
 
-      render();
+function clearAll() {
+  selected.clear();
+
+  document.getElementById("result-panel").classList.remove("show");
+  document.getElementById("overlay").classList.remove("show");
+
+  render();
+}
+
+function sortear() {
+  if (selected.size === 0) return;
+
+  const pool = [...selected];
+  const winner = pool[Math.floor(Math.random() * pool.length)];
+
+  const panel = document.getElementById("result-panel");
+  const overlay = document.getElementById("overlay");
+  const res = document.getElementById("result-maps");
+
+  res.innerHTML = `
+  <div class="result-map-card">
+    <img
+      src="${maps[winner].img}"
+      alt="${maps[winner].name}"
+      class="result-map-image"
+    >
+
+    <div class="result-map-badge winner">
+      ${maps[winner].name}
+    </div>
+  </div>
+`;
+
+  panel.classList.add("show");
+  overlay.classList.add("show");
+}
+
+document
+  .getElementById("overlay")
+  .addEventListener("click", function () {
+    document.getElementById("overlay").classList.remove("show");
+    document.getElementById("result-panel").classList.remove("show");
+  });
     </script>
 
     <div class="copy">
