@@ -1,0 +1,113 @@
+
+/* =========================================================
+   HISTÓRICO
+   Estilos isolados para não interferir nas outras páginas
+========================================================= */
+
+.history-page .history-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-page .history-item {
+    margin: 0;
+    padding: 0;
+    background: #0b0d10;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.history-page .history-date {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 11px 14px;
+    background: #111318;
+    border-bottom: 1px solid var(--border);
+    color: #9aa3ad;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.history-page .history-date > span:first-child {
+    color: #c5cbd2;
+}
+
+.history-page .history-difference {
+    color: #747e89;
+}
+
+.history-page .history-difference strong {
+    color: var(--orange);
+    font-weight: 900;
+}
+
+.history-page .history-balanced {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 3px 7px;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.history-page .teams-grid {
+    padding: 10px;
+    gap: 10px;
+}
+
+.history-page .team-card {
+    background: #0b0d10;
+    border: 1px solid #292e35;
+}
+
+.history-page .team-title {
+    min-height: 45px;
+}
+
+.history-page .empty-msg {
+    margin-top: 0;
+    border-radius: 0;
+}
+
+/* =========================================================
+   RESPONSIVIDADE DO HISTÓRICO
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .history-page .history-date {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .history-page .history-difference {
+        width: 100%;
+    }
+
+    .history-page .teams-grid {
+        grid-template-columns: 1fr;
+        padding: 8px;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .history-page .history-date {
+        font-size: 10px;
+    }
+
+}
