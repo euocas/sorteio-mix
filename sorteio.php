@@ -3,10 +3,10 @@ session_start();
 require_once __DIR__ . '/leaderboard.php';
 
 $players = [
-  1 => ['APK', 'GUIIIZERA', 'GUSMA1', 'MAX', 'KVARA', 'COMPLETE 1', 'DNLZIN', 'PDZIKA'],
-  2 => ['BAIANO', 'LEOZOX', 'KUSH', 'LEVI', 'FOFÃO', 'TODDY', 'COMPLETE 2', 'JAMMER', 'GATO RUSSO'],
-  3 => ['XAUS', 'JONAS', 'SANTIAGO', 'NEGOTRUFA', 'JOTAV', 'COMPLETE 3'],
-  4 => ['JV (PUTIFERO)', 'PIXELCOPATA', 'FALKES', 'LEE', 'GRIMM', 'MOREL', 'AVESTRUZ', 'COMPLETE 4', 'SIMO', 'NATAN'],
+  1 => ['APK', 'GUIIIZERA', 'GUSMA1', 'MAX', 'KVARA', 'COMPLETE 1', 'DNLZIN', 'PDZIKA', 'JAMMER'],
+  2 => ['BAIANO', 'LEOZOX', 'KUSH', 'LEVI', 'TODDY', 'COMPLETE 2'],
+  3 => ['XAUS', 'JONAS', 'SANTIAGO', 'JOTAV', 'COMPLETE 3'],
+  4 => ['JV (PUTIFERO)', 'PIXELCOPATA', 'FALKES', 'GRIMM', 'AVESTRUZ', 'COMPLETE 4', 'SIMO'],
   5 => ['PESCADOR', 'LULA', 'CARAMELO', 'MARKEZ', 'KABAL', 'PANCO', 'COMPLETE 5'],
 ];
 
