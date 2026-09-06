@@ -179,6 +179,21 @@ header {
   border-color: transparent;
 }
 
+/* Indicador de transmissão ativa acima da aba "Ao Vivo". */
+.tabs .btn[onclick*="ao_vivo.php"]::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.65);
+  transform: translateX(-50%);
+  animation: pulse-dot 1.2s infinite;
+}
+
 /* =========================================================
    TÍTULOS — TIMES
 ========================================================= */
@@ -509,6 +524,31 @@ header p {
   gap: 10px;
 }
 
+/* Used only by the "Ranking por Pontuação" draw mode. */
+.points-ranking-list {
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  background: #0b0d10;
+  border: 1px solid #292e35;
+}
+
+#manualRanksGrid[hidden],
+#pointsRankingList[hidden] {
+  display: none !important;
+}
+
+.points-ranking-list .player-label {
+  min-height: 42px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #292e35;
+}
+
+.points-ranking-list .player-label:last-child {
+  border-bottom: 0;
+}
+
 .rank-card {
   min-width: 0;
   background: #0b0d10;
@@ -815,6 +855,87 @@ header p {
   margin: 0;
   color: #747e89;
   font-size: 12px;
+}
+
+.history-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: -16px 0 14px;
+}
+
+.history-clear-button {
+  min-height: 34px;
+  padding: 7px 12px;
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.55);
+}
+
+.history-clear-button:hover {
+  color: var(--white);
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--red);
+}
+
+.today-history-header .history-clear-button {
+  margin-top: 12px;
+}
+
+.history-password-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.history-password-dialog {
+  width: min(360px, 100%);
+  padding: 20px;
+  background: #0b0d10;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+}
+
+.history-password-dialog h2 {
+  margin: 0 0 6px;
+  color: var(--white);
+  font-size: 18px;
+}
+
+.history-password-dialog p,
+.history-password-dialog label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.history-password-dialog label {
+  margin-top: 16px;
+  font-weight: 700;
+}
+
+.history-password-dialog input {
+  width: 100%;
+  height: 40px;
+  margin-top: 6px;
+  padding: 0 10px;
+  background: #111419;
+  border: 1px solid var(--border-light);
+  color: var(--text);
+  outline: none;
+}
+
+.history-password-dialog input:focus {
+  border-color: var(--orange);
+}
+
+.history-password-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .today-history-list {

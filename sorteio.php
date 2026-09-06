@@ -2,12 +2,60 @@
 session_start();
 require_once __DIR__ . '/leaderboard.php';
 
+// Lista manual do Sorteio: edite somente esta distribuição para mover ou
+// adicionar participantes entre os ranks. O Ranking nunca altera estes grupos.
 $players = [
-  1 => ['APK', 'GUIIIZERA', 'GUSMA1', 'MAX', 'KVARA', 'COMPLETE 1', 'DNLZIN', 'PDZIKA', 'JAMMER'],
-  2 => ['BAIANO', 'LEOZOX', 'KUSH', 'LEVI', 'TODDY', 'COMPLETE 2'],
-  3 => ['XAUS', 'JONAS', 'SANTIAGO', 'JOTAV', 'COMPLETE 3'],
-  4 => ['JV (PUTIFERO)', 'PIXELCOPATA', 'FALKES', 'GRIMM', 'AVESTRUZ', 'COMPLETE 4', 'SIMO'],
-  5 => ['PESCADOR', 'LULA', 'CARAMELO', 'MARKEZ', 'KABAL', 'PANCO', 'COMPLETE 5'],
+  1 => [
+    ['name' => 'APK'],
+    ['name' => 'GUIIIZERA'],
+    ['name' => 'GUSMA1'],
+    ['name' => 'MAX'],
+    ['name' => 'KVARA'],
+    ['name' => 'COMPLETE 1'],
+    ['name' => 'DNLZIN'],
+    ['name' => 'PDZIKA'],
+    ['name' => 'JAMMER'],
+],
+
+2 => [
+    ['name' => 'BAIANO'],
+    ['name' => 'POWERZIN'],
+    ['name' => 'LEOZOX'],
+    ['name' => 'KUSH'],
+    ['name' => 'LEVI'],
+    ['name' => 'TODDY'],
+    ['name' => 'RAZEC'],
+    ['name' => 'COMPLETE 2'],
+],
+
+3 => [
+    ['name' => 'SCHAUSS'],
+    ['name' => 'JONAS'],
+    ['name' => 'MAKAROV'],
+    ['name' => 'JOTAV', 'lookup' => 'BOY MAGUINHO'],
+    ['name' => 'COMPLETE 3'],
+],
+
+4 => [
+    ['name' => 'JV (PUTIFERO)'],
+    ['name' => 'PIXELCOPATA'],
+    ['name' => 'FALKES'],
+    ['name' => 'GRIMM'],
+    ['name' => 'AVESTRUZ'],
+    ['name' => 'COMPLETE 4'],
+    ['name' => 'SIMO'],
+],
+
+5 => [
+    ['name' => 'PESCADOR'],
+    ['name' => 'LULA', 'lookup' => 'https://www.twitch.tv/objecctt'],
+    ['name' => 'MARKEZ'],
+    ['name' => 'KABAL'],
+    ['name' => 'PANCO'],
+    ['name' => 'MATHEURO'],
+    ['name' => 'RONY. RUIM'],
+    ['name' => 'COMPLETE 5'],
+]
 ];
 
 foreach ($players as &$rankList) {
@@ -90,50 +138,84 @@ function readTodayDrawHistory(): array
   return array_reverse($todayHistory);
 }
 
-function normalizeLeaderboardName(string $name): string
+function normalizePlayerName(string $name): string
 {
   $name = str_replace('$', 's', $name);
   $name = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name) ?: $name;
-  return strtolower((string) preg_replace('/[^a-z0-9]/i', '', $name));
+  $name = strtolower((string) preg_replace('/[^a-z0-9]/i', '', $name));
+  // Steam nicknames frequently stretch characters (e.g. JAMMMMMER). They
+  // remain the same manual player after repeated characters are compressed.
+  return (string) preg_replace('/(.)\1+/', '$1', $name);
 }
 
-function findLeaderboardPlayer(string $name, array $leaderboard): ?array
+function isCompletePlaceholder(string $name): bool
 {
-  $normalizedName = normalizeLeaderboardName($name);
-  $prefixMatch = null;
-  $prefixLength = PHP_INT_MAX;
+  return preg_match('/^COMPLETE\s+\d+$/i', trim($name)) === 1;
+}
 
-  foreach ($leaderboard as $leaderboardPlayer) {
-    if (!is_array($leaderboardPlayer) || !isset($leaderboardPlayer['name'])) {
+function findLeaderboardPlayerByName(string $name, array $leaderboard): ?array
+{
+  $needle = normalizePlayerName($name);
+  if ($needle === '') {
+    return null;
+  }
+
+  $partialMatches = [];
+  $closestMatch = null;
+  $closestDistance = PHP_INT_MAX;
+  $closestThreshold = 0;
+  $closestIsUnique = true;
+  foreach ($leaderboard as $candidate) {
+    if (!is_array($candidate) || !isset($candidate['name'])) {
       continue;
     }
-
-    $candidateName = normalizeLeaderboardName((string) $leaderboardPlayer['name']);
-    if ($candidateName === $normalizedName) {
-      return $leaderboardPlayer;
+    $candidateName = normalizePlayerName((string) $candidate['name']);
+    if ($candidateName === $needle) {
+      return $candidate;
+    }
+    if ($candidateName !== '' && (str_starts_with($candidateName, $needle) || str_contains($candidateName, $needle))) {
+      $partialMatches[] = $candidate;
     }
 
-    if (
-      $normalizedName !== '' && $candidateName !== '' &&
-      (str_starts_with($candidateName, $normalizedName) || str_starts_with($normalizedName, $candidateName)) &&
-      strlen($candidateName) < $prefixLength
-    ) {
-      $prefixMatch = $leaderboardPlayer;
-      $prefixLength = strlen($candidateName);
+    // Name-only entries are allowed for manual maintenance. For abbreviated
+    // aliases, accept a close match only when its first three characters match
+    // and no equally-close player exists.
+    if ($candidateName !== '') {
+      $distance = levenshtein($needle, $candidateName);
+      if ($distance < $closestDistance) {
+        $closestMatch = $candidate;
+        $closestDistance = $distance;
+        $closestThreshold = strlen($needle) >= 3 && substr($candidateName, 0, 3) === substr($needle, 0, 3)
+          ? 3
+          : (strlen($needle) >= 2 && substr($candidateName, 0, 2) === substr($needle, 0, 2) ? 2 : 1);
+        $closestIsUnique = true;
+      } elseif ($distance === $closestDistance) {
+        $closestIsUnique = false;
+      }
     }
   }
 
-  return $prefixMatch;
+  // A name-only entry is accepted only when it identifies one player. This
+  // preserves manual editing without silently assigning another player's score.
+  if (count($partialMatches) === 1) {
+    return $partialMatches[0];
+  }
+
+  return $closestIsUnique && $closestDistance <= $closestThreshold ? $closestMatch : null;
 }
 
-function enrichPlayerFromLeaderboard(array $player, array $leaderboard): array
+function enrichPlayerFromLeaderboard(array $player, array $leaderboardById, array $leaderboard): array
 {
-  $rankingPlayer = findLeaderboardPlayer($player['name'], $leaderboard);
+  $configuredId = trim((string) ($player['id'] ?? ''));
+  $rankingPlayer = $configuredId !== ''
+    ? ($leaderboardById[$configuredId] ?? null)
+    : (isCompletePlaceholder((string) $player['name']) ? null : findLeaderboardPlayerByName((string) ($player['lookup'] ?? $player['name']), $leaderboard));
+
   if ($rankingPlayer === null) {
     return array_merge($player, [
       'points' => null,
       'score' => 0,
-      'steam_id' => null,
+      'id' => $configuredId === '' ? null : $configuredId,
       'avatar_url' => null,
       'rankingName' => null,
     ]);
@@ -142,10 +224,12 @@ function enrichPlayerFromLeaderboard(array $player, array $leaderboard): array
   $points = is_numeric($rankingPlayer['points'] ?? null) ? $rankingPlayer['points'] : null;
 
   return array_merge($player, [
-    'name' => (string) ($rankingPlayer['name'] ?? $player['name']),
+    // The configured name remains the label and rank membership; Ranking only
+    // supplies the official ID and current points.
+    'name' => (string) $player['name'],
     'points' => $points,
     'score' => $points === null ? 0 : max(0, $points),
-    'steam_id' => $rankingPlayer['steam_id'] ?? null,
+    'id' => $rankingPlayer['id'],
     'avatar_url' => $rankingPlayer['avatar_url'] ?? null,
     'rankingName' => $rankingPlayer['name'] ?? null,
   ]);
@@ -199,14 +283,7 @@ function buildRankingTeams(array $playerObjects): array
   return ['team1' => $team1, 'team2' => $team2, 'sum1' => $sum1, 'sum2' => $sum2];
 }
 
-if (isset($_GET['ranking_api'])) {
-  header('Content-Type: application/json; charset=utf-8');
-  header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-  echo json_encode(fetchLeaderboard(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-  exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   $selected = $_POST['players'] ?? [];
   $rawSelected = $selected;
   $drawMode = ($_POST['draw_mode'] ?? 'rank') === 'ranking' ? 'ranking' : 'rank';
@@ -216,17 +293,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     $playerObjects = [];
     $leaderboard = $drawMode === 'ranking' ? fetchLeaderboard() : [];
+    $leaderboardById = indexLeaderboardById($leaderboard);
 
-    if ($drawMode === 'ranking' && $leaderboard === []) {
+    if ($drawMode === 'ranking' && $leaderboardById === []) {
       $error = 'Ranking indisponível. Tente novamente.';
     }
 
     foreach ($selected as $entry) {
-      [$rank, $name] = explode('|', $entry, 2);
-      $player = ['name' => $name, 'rank' => (int) $rank, 'score' => (int) $rank];
+      [$rank, $id, $name, $lookup] = array_pad(explode('|', $entry, 4), 4, '');
+      $player = ['id' => $id === '' ? null : $id, 'name' => $name, 'lookup' => $lookup, 'rank' => (int) $rank, 'score' => (int) $rank];
 
       if ($drawMode === 'ranking') {
-        $player = enrichPlayerFromLeaderboard($player, $leaderboard);
+        $player = enrichPlayerFromLeaderboard($player, $leaderboardById, $leaderboard);
         $player['score'] = $player['points'] === null ? 0 : max(0, $player['points']);
         if ($player['points'] === null) {
           $rankingMissingCount++;
@@ -365,22 +443,22 @@ $rankColors = [
         </div>
       </div>
 
-      <div class="ranks-grid">
-        <?php foreach ($players as $rank => $names): ?>
+      <div class="ranks-grid" id="manualRanksGrid">
+          <?php foreach ($players as $rank => $rankPlayers): ?>
           <div class="rank-card rank-<?= $rank ?>">
             <div class="rank-header">
               <span><?= $rankLabels[$rank]['icon'] ?></span>
               <span><?= $rankLabels[$rank]['label'] ?></span>
             </div>
             <div class="rank-players">
-              <?php foreach ($names as $name): ?>
-                <?php $val = $rank . '|' . $name; ?>
-                <label class="player-label" id="lbl-<?= md5($val) ?>" data-player-name="<?= htmlspecialchars($name) ?>">
-                  <input type="checkbox" name="players[]" value="<?= htmlspecialchars($val) ?>"
+              <?php foreach ($rankPlayers as $player): ?>
+                <?php $val = $rank . '|' . ($player['id'] ?? '') . '|' . $player['name'] . '|' . ($player['lookup'] ?? ''); ?>
+                <label class="player-label" id="lbl-<?= md5($val) ?>" data-player-id="<?= htmlspecialchars((string) ($player['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" data-player-name="<?= htmlspecialchars($player['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>" data-player-lookup="<?= htmlspecialchars((string) ($player['lookup'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" data-player-rank="<?= $rank ?>">
+                  <input type="checkbox" name="players[]" value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>"
                     onchange="updateCounter(this)"
                     <?= (isset($_POST['players']) && in_array($val, $_POST['players'])) ? 'checked' : '' ?>>
                   <img class="player-avatar player-list-avatar" alt="" hidden>
-                  <span class="player-name-text"><?= htmlspecialchars($name) ?></span>
+                  <span class="player-name-text"><?= htmlspecialchars($player['name'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
                   <span class="player-points" hidden></span>
                 </label>
               <?php endforeach; ?>
@@ -388,6 +466,7 @@ $rankColors = [
           </div>
         <?php endforeach; ?>
       </div>
+      <div class="points-ranking-list" id="pointsRankingList" hidden aria-label="Jogadores ordenados por pontuação"></div>
     </form>
 
     <?php if ($teams): ?>
@@ -404,7 +483,7 @@ $rankColors = [
                 <div class="team-player">
                   <span class="player-name"><?= htmlspecialchars($p['name']) ?></span>
                   <?php if ($teams['mode'] === 'ranking'): ?>
-                    <span class="player-score">Ranking por Pontuação: <?= htmlspecialchars((string) ($p['points'] ?? 0)) ?> pts</span>
+                    <span class="player-score">Ranking por Pontuação: <?= $p['points'] === null ? 'Sem pontuação' : number_format((float) $p['points'], 0, ',', '.') . ' pts' ?></span>
                   <?php endif; ?>
                   <span class="rank-pill rp-<?= $p['rank'] ?>">R<?= $p['rank'] ?></span>
                 </div>
@@ -421,7 +500,7 @@ $rankColors = [
                 <div class="team-player">
                   <span class="player-name"><?= htmlspecialchars($p['name']) ?></span>
                   <?php if ($teams['mode'] === 'ranking'): ?>
-                    <span class="player-score">Ranking por Pontuação: <?= htmlspecialchars((string) ($p['points'] ?? 0)) ?> pts</span>
+                    <span class="player-score">Ranking por Pontuação: <?= $p['points'] === null ? 'Sem pontuação' : number_format((float) $p['points'], 0, ',', '.') . ' pts' ?></span>
                   <?php endif; ?>
                   <span class="rank-pill rp-<?= $p['rank'] ?>">R<?= $p['rank'] ?></span>
                 </div>
@@ -445,6 +524,7 @@ $rankColors = [
       <div class="today-history-header">
         <h2 id="today-history-title">HISTÓRICO DE SORTEIOS DE HOJE</h2>
         <p>Times sorteados hoje, pra ajudar a não repetir sempre a mesma combinação. Reseta à meia-noite.</p>
+        <button type="button" class="btn btn-ghost history-clear-button" onclick="clearHistory()">Limpar histórico</button>
       </div>
 
       <?php if (empty($todayHistory)): ?>
@@ -493,53 +573,108 @@ $rankColors = [
     const rankingStatus = document.getElementById('rankingStatus');
     const sortForm = document.getElementById('sortForm');
     const sortSubmit = document.getElementById('sortSubmit');
+    const manualRanksGrid = document.getElementById('manualRanksGrid');
+    const pointsRankingList = document.getElementById('pointsRankingList');
     let rankingReady = drawModeInput.value !== 'ranking';
+    let leaderboardById = new Map();
     let leaderboardPlayers = [];
 
-    function normalizeLeaderboardName(name) {
+    function normalizePlayerName(name) {
       return String(name || '')
         .replace(/\$/g, 's')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase()
-        .replace(/[^a-z0-9]/g, '');
+        .replace(/[^a-z0-9]/g, '')
+        .replace(/(.)\1+/g, '$1');
     }
 
-    function findRankingPlayer(name) {
-      const normalizedName = normalizeLeaderboardName(name);
-      let prefixMatch = null;
-      let shortestName = Infinity;
+    function isCompletePlaceholder(name) {
+      return /^COMPLETE\s+\d+$/i.test(String(name || '').trim());
+    }
 
+    function findRankingPlayerByName(name) {
+      const needle = normalizePlayerName(name);
+      if (!needle || isCompletePlaceholder(name)) return null;
+
+      const partialMatches = [];
+      let closestMatch = null;
+      let closestDistance = Infinity;
+      let closestThreshold = 0;
+      let closestIsUnique = true;
       for (const player of leaderboardPlayers) {
-        const candidateName = normalizeLeaderboardName(player.name);
-        if (candidateName === normalizedName) return player;
-
-        if (normalizedName && candidateName &&
-          (candidateName.startsWith(normalizedName) || normalizedName.startsWith(candidateName)) &&
-          candidateName.length < shortestName) {
-          prefixMatch = player;
-          shortestName = candidateName.length;
+        const candidateName = normalizePlayerName(player.name);
+        if (candidateName === needle) return player;
+        if (candidateName && (candidateName.startsWith(needle) || candidateName.includes(needle))) {
+          partialMatches.push(player);
+        }
+        if (candidateName) {
+          const distance = levenshteinDistance(needle, candidateName);
+          if (distance < closestDistance) {
+            closestMatch = player;
+            closestDistance = distance;
+            closestThreshold = needle.length >= 3 && candidateName.slice(0, 3) === needle.slice(0, 3)
+              ? 3
+              : (needle.length >= 2 && candidateName.slice(0, 2) === needle.slice(0, 2) ? 2 : 1);
+            closestIsUnique = true;
+          } else if (distance === closestDistance) {
+            closestIsUnique = false;
+          }
         }
       }
+      if (partialMatches.length === 1) return partialMatches[0];
+      return closestIsUnique && closestDistance <= closestThreshold ? closestMatch : null;
+    }
 
-      return prefixMatch;
+    function levenshteinDistance(left, right) {
+      const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+      for (let leftIndex = 1; leftIndex <= left.length; leftIndex++) {
+        let previous = row[0];
+        row[0] = leftIndex;
+        for (let rightIndex = 1; rightIndex <= right.length; rightIndex++) {
+          const current = row[rightIndex];
+          row[rightIndex] = Math.min(
+            row[rightIndex] + 1,
+            row[rightIndex - 1] + 1,
+            previous + (left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1)
+          );
+          previous = current;
+        }
+      }
+      return row[right.length];
     }
 
     function updateRankingPlayerList() {
       document.querySelectorAll('.player-label').forEach(label => {
-        const player = findRankingPlayer(label.dataset.playerName);
+        const configuredId = label.dataset.playerId;
+        const player = configuredId
+          ? leaderboardById.get(configuredId)
+          : findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
         const avatar = label.querySelector('.player-list-avatar');
         const name = label.querySelector('.player-name-text');
         const points = label.querySelector('.player-points');
+        const checkbox = label.querySelector('input[type="checkbox"]');
 
         if (drawModeInput.value !== 'ranking') {
-          avatar.hidden = true;
+          if (player?.avatar_url) {
+            avatar.src = player.avatar_url;
+            avatar.hidden = false;
+            avatar.onerror = () => {
+              avatar.hidden = true;
+            };
+          } else {
+            avatar.hidden = true;
+          }
           points.hidden = true;
           name.textContent = label.dataset.playerName;
           return;
         }
 
-        name.textContent = player?.name || label.dataset.playerName;
+        name.textContent = label.dataset.playerName;
+        if (player?.id && !configuredId) {
+          label.dataset.playerId = String(player.id);
+          checkbox.value = `${label.dataset.playerRank}|${player.id}|${label.dataset.playerName}|${label.dataset.playerLookup || ''}`;
+        }
         if (player?.avatar_url) {
           avatar.src = player.avatar_url;
           avatar.hidden = false;
@@ -551,13 +686,59 @@ $rankColors = [
         }
 
         if (player && Number.isFinite(Number(player.points))) {
-          points.textContent = `${Number(player.points)} pts`;
+          points.textContent = `${Number(player.points).toLocaleString('pt-BR')} pts`;
           points.hidden = false;
         } else {
           points.textContent = 'Sem pontuação';
           points.hidden = false;
         }
       });
+
+      if (drawModeInput.value === 'ranking') {
+        renderPointRanking();
+      }
+    }
+
+    function rankingPlayerForLabel(label) {
+      return label.dataset.playerId
+        ? leaderboardById.get(label.dataset.playerId)
+        : findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
+    }
+
+    function renderPointRanking() {
+      const labels = Array.from(document.querySelectorAll('.player-label'));
+      labels.forEach((label, index) => {
+        if (!label._manualParent) {
+          label._manualParent = label.parentElement;
+          label._manualIndex = index;
+        }
+      });
+
+      labels.sort((left, right) => {
+        const leftPoints = Number(rankingPlayerForLabel(left)?.points);
+        const rightPoints = Number(rankingPlayerForLabel(right)?.points);
+        const leftScore = Number.isFinite(leftPoints) ? leftPoints : -1;
+        const rightScore = Number.isFinite(rightPoints) ? rightPoints : -1;
+        return rightScore - leftScore || left.dataset.playerName.localeCompare(right.dataset.playerName, 'pt-BR');
+      }).forEach(label => pointsRankingList.appendChild(label));
+
+      manualRanksGrid.hidden = true;
+      pointsRankingList.hidden = false;
+    }
+
+    function restoreManualRanks() {
+      const labelsByParent = new Map();
+      Array.from(pointsRankingList.querySelectorAll('.player-label')).forEach(label => {
+        const labels = labelsByParent.get(label._manualParent) || [];
+        labels.push(label);
+        labelsByParent.set(label._manualParent, labels);
+      });
+      labelsByParent.forEach((labels, parent) => {
+        labels.sort((left, right) => left._manualIndex - right._manualIndex).forEach(label => parent.appendChild(label));
+      });
+
+      pointsRankingList.hidden = true;
+      manualRanksGrid.hidden = false;
     }
 
     function selectDrawMode(mode) {
@@ -567,11 +748,13 @@ $rankColors = [
       });
 
       if (drawModeInput.value === 'ranking') {
+        renderPointRanking();
         loadRankingForDraw();
       } else {
         rankingReady = true;
-        leaderboardPlayers = [];
+        restoreManualRanks();
         updateRankingPlayerList();
+        loadPlayerAvatars();
         rankingStatus.textContent = '';
         rankingStatus.classList.remove('error');
         sortSubmit.disabled = false;
@@ -585,7 +768,7 @@ $rankColors = [
       rankingStatus.classList.remove('error');
 
       try {
-        const response = await fetch('sorteio.php?ranking_api=1', {
+        const response = await fetch('ranking.php?api=1', {
           cache: 'no-store',
           headers: {
             'Accept': 'application/json'
@@ -597,6 +780,11 @@ $rankColors = [
         const leaderboard = Array.isArray(data) ? data : (data.players || data.leaderboard || []);
         if (!leaderboard.length) throw new Error('empty leaderboard');
 
+        leaderboardById = new Map(
+          leaderboard
+            .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
+            .map(player => [String(player.id), player])
+        );
         leaderboardPlayers = leaderboard;
         updateRankingPlayerList();
         rankingReady = true;
@@ -609,6 +797,30 @@ $rankColors = [
       }
     }
 
+    // The normal rank draw keeps its manual ranking rules, but still loads the
+    // official player directory so its cards can show the same avatars.
+    async function loadPlayerAvatars() {
+      try {
+        const response = await fetch('ranking.php?api=1', {
+          cache: 'no-store',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        const leaderboard = Array.isArray(data) ? data : (data.players || data.leaderboard || []);
+        leaderboardById = new Map(
+          leaderboard
+            .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
+            .map(player => [String(player.id), player])
+        );
+        leaderboardPlayers = leaderboard;
+        updateRankingPlayerList();
+      } catch (error) {
+        console.error('Erro ao carregar avatares para o sorteio:', error);
+      }
+    }
+
     sortForm.addEventListener('submit', event => {
       if (drawModeInput.value === 'ranking' && !rankingReady) {
         event.preventDefault();
@@ -617,7 +829,10 @@ $rankColors = [
     });
 
     if (drawModeInput.value === 'ranking') {
+      renderPointRanking();
       loadRankingForDraw();
+    } else {
+      loadPlayerAvatars();
     }
 
     function filterPlayers(query) {
@@ -627,6 +842,14 @@ $rankColors = [
         .replace(/[\u0300-\u036f]/g, ''); // remove acentos
 
       const term = normalize(query.trim());
+
+      if (drawModeInput.value === 'ranking') {
+        pointsRankingList.querySelectorAll('.player-label').forEach(label => {
+          const matches = term === '' || normalize(label.textContent).includes(term);
+          label.style.display = matches ? '' : 'none';
+        });
+        return;
+      }
 
       document.querySelectorAll('.rank-card').forEach(card => {
         let anyVisible = false;
@@ -712,6 +935,8 @@ $rankColors = [
     document.getElementById('selCount').textContent =
       document.querySelectorAll('input[type="checkbox"]:checked').length;
   </script>
+
+  <script src="history-clear.js"></script>
 
   <?php if ($teams): ?>
     <script>

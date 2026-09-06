@@ -1,85 +1,11 @@
 {
-    "status": "done",
+    "status": "selecting",
     "selected": [
-        "1|KVARA",
-        "1|PDZIKA",
-        "2|LEOZOX",
-        "2|GATO RUSSO",
-        "2|BAIANO",
-        "2|COMPLETE 2",
-        "3|NEGOTRUFA",
-        "3|JOTAV",
-        "4|COMPLETE 4",
-        "4|SIMO"
+        "1|76561199679282192|KVARA|",
+        "1|76561198731489987|DNLZIN|",
+        "2|76561199652109305|KUSH|"
     ],
-    "teams": {
-        "team1": [
-            {
-                "name": "KVARA",
-                "rank": 1,
-                "score": 1
-            },
-            {
-                "name": "NEGOTRUFA",
-                "rank": 3,
-                "score": 3
-            },
-            {
-                "name": "LEOZOX",
-                "rank": 2,
-                "score": 2
-            },
-            {
-                "name": "COMPLETE 4",
-                "rank": 4,
-                "score": 4
-            },
-            {
-                "name": "BAIANO",
-                "rank": 2,
-                "score": 2
-            }
-        ],
-        "team2": [
-            {
-                "name": "JOTAV",
-                "rank": 3,
-                "score": 3
-            },
-            {
-                "name": "GATO RUSSO",
-                "rank": 2,
-                "score": 2
-            },
-            {
-                "name": "PDZIKA",
-                "rank": 1,
-                "score": 1
-            },
-            {
-                "name": "COMPLETE 2",
-                "rank": 2,
-                "score": 2
-            },
-            {
-                "name": "SIMO",
-                "rank": 4,
-                "score": 4
-            }
-        ],
-        "sum1": 12,
-        "sum2": 12,
-        "mode": "rank",
-        "missingRanking": 0
-    },
-    "maps": {
-        "status": "done",
-        "selected": [
-            {
-                "name": "Cache",
-                "image": "https:\/\/images.steamusercontent.com\/ugc\/2397691894753915701\/B2E571360CB344CFBD8E1039D889461080557BD9\/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
-            }
-        ]
-    },
-    "updated_at": "2026-09-06T09:12:56+00:00"
+    "teams": null,
+    "maps": null,
+    "updated_at": "2026-09-06T10:41:11+00:00"
 }

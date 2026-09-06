@@ -45,5 +45,28 @@ function fetchLeaderboard(): array
   }
 
   $players = $data['players'] ?? $data['leaderboard'] ?? $data;
-  return is_array($players) ? array_values($players) : [];
+  if (!is_array($players)) {
+    return [];
+  }
+
+  // The ranking API is the canonical player source.  Normalize its identifier
+  // once here so every consumer (Ranking and Sorteio) uses the same key.
+  return array_values(array_map(static function ($player): array {
+    $player = is_array($player) ? $player : [];
+    $id = $player['id'] ?? $player['steam_id'] ?? $player['steamId'] ?? $player['steamid'] ?? null;
+    $player['id'] = $id === null || $id === '' ? null : (string) $id;
+    return $player;
+  }, $players));
+}
+
+function indexLeaderboardById(array $players): array
+{
+  $indexed = [];
+  foreach ($players as $player) {
+    if (!is_array($player) || empty($player['id'])) {
+      continue;
+    }
+    $indexed[(string) $player['id']] = $player;
+  }
+  return $indexed;
 }

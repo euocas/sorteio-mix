@@ -189,16 +189,10 @@
 
     function parseEntry(entry) {
 
-      const idx = entry.indexOf('|');
+      const parts = String(entry).split('|');
 
-      const rank = parseInt(
-        entry.slice(0, idx),
-        10
-      );
-
-      const name = entry.slice(
-        idx + 1
-      );
+      const rank = parseInt(parts[0] || '0', 10);
+      const name = parts[2] || parts[1] || '';
 
       return {
         rank,

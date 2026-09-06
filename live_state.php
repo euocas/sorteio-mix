@@ -24,6 +24,7 @@ if (!is_dir($dataDir)) {
 
 $liveFile    = $dataDir . '/live_state.json';
 $historyFile = $dataDir . '/history.json';
+const HISTORY_CLEAR_PASSWORD_HASH = '$2y$10$wpg2hM9IOJh9GU7npTkklu8OL//AOY5FCjH4MTSpAIETCdCiOgyQO';
 
 function readJsonFile(string $file, $default)
 {
@@ -111,6 +112,24 @@ if ($method === 'POST') {
             'updated_at' => date('c'),
         ];
         writeJsonFile($liveFile, $state);
+        echo json_encode(['ok' => true]);
+        exit;
+    }
+
+    if ($action === 'clear_history') {
+        $password = (string) ($input['password'] ?? '');
+        if (!password_verify($password, HISTORY_CLEAR_PASSWORD_HASH)) {
+            http_response_code(403);
+            echo json_encode(['ok' => false, 'error' => 'senha incorreta']);
+            exit;
+        }
+
+        if (!writeJsonFile($historyFile, [])) {
+            http_response_code(500);
+            echo json_encode(['ok' => false, 'error' => 'não foi possível limpar o histórico']);
+            exit;
+        }
+
         echo json_encode(['ok' => true]);
         exit;
     }

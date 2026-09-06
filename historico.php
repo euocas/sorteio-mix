@@ -95,6 +95,10 @@ if (file_exists($historyFile)) {
 
     </header>
 
+    <div class="history-toolbar">
+      <button type="button" class="btn btn-ghost history-clear-button" onclick="clearHistory()">Limpar histórico</button>
+    </div>
+
 
     <!-- =====================================================
              CONTEÚDO
@@ -252,6 +256,8 @@ if (file_exists($historyFile)) {
       </p>
     </footer>
   </div>
+
+  <script src="history-clear.js"></script>
 
 </body>
 
