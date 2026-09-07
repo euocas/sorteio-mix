@@ -22,7 +22,6 @@ $players = [
     ['name' => 'POWERZIN'],
     ['name' => 'LEOZOX'],
     ['name' => 'KUSH'],
-    ['name' => 'LEVI'],
     ['name' => 'TODDY'],
     ['name' => 'RAZEC'],
     ['name' => 'COMPLETE 2'],
@@ -32,6 +31,7 @@ $players = [
     ['name' => 'SCHAUSS'],
     ['name' => 'JONAS'],
     ['name' => 'MAKAROV'],
+    ['name' => 'GRIMM'],
     ['name' => 'JOTAV', 'lookup' => 'BOY MAGUINHO'],
     ['name' => 'COMPLETE 3'],
 ],
@@ -40,10 +40,11 @@ $players = [
     ['name' => 'JV (PUTIFERO)'],
     ['name' => 'PIXELCOPATA'],
     ['name' => 'FALKES'],
-    ['name' => 'GRIMM'],
     ['name' => 'AVESTRUZ'],
     ['name' => 'COMPLETE 4'],
     ['name' => 'SIMO'],
+    ['name' => 'MATHEURO'],
+
 ],
 
 5 => [
@@ -52,7 +53,6 @@ $players = [
     ['name' => 'MARKEZ'],
     ['name' => 'KABAL'],
     ['name' => 'PANCO'],
-    ['name' => 'MATHEURO'],
     ['name' => 'RONY. RUIM'],
     ['name' => 'COMPLETE 5'],
 ]
@@ -76,8 +76,83 @@ $teams = null;
 $rawSelected = [];
 $drawMode = 'rank';
 $rankingMissingCount = 0;
+$vacancyCount = 1;
+$vacancyResult = null;
+$drawId = null;
 
-function recordDrawHistory(array $teams, array $selected): bool
+function publishTeamLiveState(array $selected, array $teams, ?string $drawId = null): bool
+{
+  $liveFile = __DIR__ . '/data/live_state.json';
+
+  $state = [
+    'status' => 'done',
+    'selected' => array_values(array_map('strval', $selected)),
+    'teams' => $teams,
+    'maps' => null,
+    'match' => null,
+    'vacancy_result' => null,
+    'draw_mode' => $teams['mode'] ?? 'rank',
+    'vacancy_count' => null,
+    'draw_id' => $drawId,
+    'updated_at' => date('c'),
+  ];
+
+  $handle = fopen($liveFile, 'c+');
+  if (!$handle) {
+    return false;
+  }
+
+  flock($handle, LOCK_EX);
+  ftruncate($handle, 0);
+  rewind($handle);
+  $written = fwrite(
+    $handle,
+    json_encode($state, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+  );
+  fflush($handle);
+  flock($handle, LOCK_UN);
+  fclose($handle);
+
+  return $written !== false;
+}
+
+function publishVacancyLiveState(array $selected, array $vacancyResult, ?string $drawId = null): bool
+{
+  $liveFile = __DIR__ . '/data/live_state.json';
+
+  $state = [
+    'status' => 'vacancies_done',
+    'selected' => array_values(array_map('strval', $selected)),
+    'teams' => null,
+    'maps' => null,
+    'match' => null,
+    'vacancy_result' => $vacancyResult,
+    'draw_mode' => 'vacancies',
+    'vacancy_count' => min(10, max(1, (int) ($vacancyResult['vacancies'] ?? 1))),
+    'draw_id' => $drawId,
+    'updated_at' => date('c'),
+  ];
+
+  $handle = fopen($liveFile, 'c+');
+  if (!$handle) {
+    return false;
+  }
+
+  flock($handle, LOCK_EX);
+  ftruncate($handle, 0);
+  rewind($handle);
+  $written = fwrite(
+    $handle,
+    json_encode($state, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+  );
+  fflush($handle);
+  flock($handle, LOCK_UN);
+  fclose($handle);
+
+  return $written !== false;
+}
+
+function recordDrawHistory(array $teams, array $selected, string $drawId): bool
 {
   $historyFile = __DIR__ . '/data/history.json';
   $handle = fopen($historyFile, 'c+');
@@ -91,9 +166,16 @@ function recordDrawHistory(array $teams, array $selected): bool
   $history = json_decode($content ?: '', true);
   $history = is_array($history) ? $history : [];
   $history[] = [
+    'id' => $drawId,
     'date' => date('c'),
     'selected' => array_values(array_map('strval', $selected)),
     'teams' => $teams,
+    'match' => [
+      'status' => 'pending',
+      'score1' => null,
+      'score2' => null,
+      'winner' => null,
+    ],
   ];
   ftruncate($handle, 0);
   rewind($handle);
@@ -284,11 +366,57 @@ function buildRankingTeams(array $playerObjects): array
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-  $selected = $_POST['players'] ?? [];
+  $selected = isset($_POST['players']) && is_array($_POST['players']) ? $_POST['players'] : [];
   $rawSelected = $selected;
-  $drawMode = ($_POST['draw_mode'] ?? 'rank') === 'ranking' ? 'ranking' : 'rank';
+  $requestedMode = $_POST['draw_mode'] ?? 'rank';
+  $drawMode = in_array($requestedMode, ['rank', 'ranking', 'vacancies'], true) ? $requestedMode : 'rank';
+  $vacancyCount = min(10, max(1, (int) ($_POST['vacancies'] ?? 1)));
 
-  if (count($selected) !== 10) {
+  if ($drawMode === 'vacancies') {
+    if (count($selected) < 1) {
+      $error = 'Selecione pelo menos 1 jogador para sortear as vagas.';
+    } elseif ($vacancyCount > count($selected)) {
+      $error = 'O número de vagas não pode ser maior que o número de jogadores selecionados.';
+    } else {
+      $vacancyPlayers = [];
+      foreach ($selected as $entry) {
+        [$rank, $id, $name, $lookup] = array_pad(explode('|', $entry, 4), 4, '');
+        $vacancyPlayers[] = [
+          'id' => $id === '' ? null : $id,
+          'name' => $name,
+          'lookup' => $lookup,
+          'rank' => (int) $rank,
+        ];
+      }
+
+      shuffle($vacancyPlayers);
+      $winners = array_slice($vacancyPlayers, 0, $vacancyCount);
+      $notSelected = array_slice($vacancyPlayers, $vacancyCount);
+      $vacancyResult = [
+        'winners' => $winners,
+        'notSelected' => $notSelected,
+        'total' => count($vacancyPlayers),
+        'vacancies' => $vacancyCount,
+      ];
+
+      // ID exclusivo para identificar este sorteio ao vivo.
+      $drawId = 'vac_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4));
+
+      // Publica imediatamente no Ao Vivo.
+      // O sorteio de vagas NÃO é gravado no histórico.
+      publishVacancyLiveState($rawSelected, $vacancyResult, $drawId);
+
+      $_SESSION['vacancy_result'] = [
+        'result' => $vacancyResult,
+        'rawSelected' => $rawSelected,
+        'drawMode' => 'vacancies',
+        'drawId' => $drawId,
+      ];
+
+      header('Location: sorteio.php#resultado-vagas');
+      exit;
+    }
+  } elseif (count($selected) !== 10) {
     $error = 'Selecione exatamente 10 jogadores! Você selecionou ' . count($selected) . '.';
   } else {
     $playerObjects = [];
@@ -342,11 +470,21 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
       $teams['mode'] = $drawMode;
       $teams['missingRanking'] = $rankingMissingCount;
-      recordDrawHistory($teams, $rawSelected);
+
+      // ID único para vincular o placar a este sorteio.
+      $drawId = 'mix_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4));
+      recordDrawHistory($teams, $rawSelected, $drawId);
+
+      // Publica o resultado no Ao Vivo diretamente no servidor.
+      // Isso evita uma condição de corrida com o update_selection
+      // que pode acontecer enquanto a página de sorteio está mudando.
+      publishTeamLiveState($rawSelected, $teams, $drawId);
+
       $_SESSION['draw_result'] = [
         'teams' => $teams,
         'rawSelected' => $rawSelected,
         'drawMode' => $drawMode,
+        'drawId' => $drawId,
       ];
       header('Location: sorteio.php#resultado');
       exit;
@@ -360,6 +498,19 @@ if (isset($_SESSION['draw_result']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
   $teams = $drawResult['teams'];
   $rawSelected = $drawResult['rawSelected'];
   $drawMode = $drawResult['drawMode'];
+  $drawId = $drawResult['drawId'] ?? null;
+}
+
+if (isset($_SESSION['vacancy_result']) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+  $vacancySession = $_SESSION['vacancy_result'];
+  unset($_SESSION['vacancy_result']);
+
+  $vacancyResult = $vacancySession['result'] ?? $vacancySession;
+  $vacancyRawSelected = $vacancySession['rawSelected'] ?? [];
+  $vacancyDrawId = $vacancySession['drawId'] ?? null;
+
+  $drawMode = 'vacancies';
+  $vacancyCount = (int) ($vacancyResult['vacancies'] ?? 1);
 }
 
 $todayHistory = readTodayDrawHistory();
@@ -397,14 +548,15 @@ $rankColors = [
         <button type="button" class="btn btn-ghost" onclick="window.location.href='temporadas.php'">Temporadas</button>
       </nav>
 
-      <h1>⚡ SORTEIO DE MIX ⚡</h1>
-      <p>Selecione 10 jogadores para gerar dois times equilibrados</p>
+      <h1>SORTEIO DE MIX</h1>
+      <p id="drawDescription">Selecione 10 jogadores para gerar dois times equilibrados</p>
 
       <div class="draw-mode" aria-label="Modo de sorteio">
         <span class="draw-mode-label">Modo de sorteio</span>
         <div class="draw-mode-options">
-          <button type="button" class="draw-mode-option<?= $drawMode === 'rank' ? ' active' : '' ?>" data-mode="rank" onclick="selectDrawMode('rank')">Ranking</button>
-          <button type="button" class="draw-mode-option<?= $drawMode === 'ranking' ? ' active' : '' ?>" data-mode="ranking" onclick="selectDrawMode('ranking')">Ranking por Pontuação</button>
+          <button type="button" class="draw-mode-option<?= $drawMode === 'rank' ? ' active' : '' ?>" data-mode="rank" onclick="selectDrawMode('rank')"> Montar Times</button>
+          <button type="button" class="draw-mode-option<?= $drawMode === 'ranking' ? ' active' : '' ?>" data-mode="ranking" onclick="selectDrawMode('ranking')"> Ranking por Pontuação</button>
+          <button type="button" class="draw-mode-option<?= $drawMode === 'vacancies' ? ' active' : '' ?>" data-mode="vacancies" onclick="selectDrawMode('vacancies')"> Sortear Vagas</button>
         </div>
         <p id="rankingStatus" class="draw-mode-status" aria-live="polite"></p>
       </div>
@@ -435,11 +587,22 @@ $rankColors = [
       <div class="counter-bar">
         <div>
           <div class="counter-text">Jogadores selecionados</div>
-          <div class="counter-num"><span id="selCount">0</span> / 10</div>
+          <div class="counter-num"><span id="selCount">0</span> <span id="selLimit">/ 10</span></div>
         </div>
-        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <div class="draw-actions">
+          <div class="vacancy-control" id="vacancyControl" hidden>
+            <label for="vacancies">Vagas disponíveis</label>
+            <div class="vacancy-stepper">
+              <button type="button" class="vacancy-step" onclick="changeVacancies(-1)" aria-label="Diminuir número de vagas">−</button>
+              <div class="vacancy-value">
+                <input type="number" name="vacancies" id="vacancies" min="1" max="10" value="<?= min(10, max(1, $vacancyCount)) ?>" aria-label="Número de vagas">
+                <span>vagas</span>
+              </div>
+              <button type="button" class="vacancy-step" onclick="changeVacancies(1)" aria-label="Aumentar número de vagas">+</button>
+            </div>
+          </div>
           <button type="button" class="btn btn-ghost" onclick="clearAll()">Limpar</button>
-          <button type="submit" class="btn btn-primary" id="sortSubmit">⚡ Sortear Times</button>
+          <button type="submit" class="btn btn-primary" id="sortSubmit">Sortear Times</button>
         </div>
       </div>
 
@@ -468,6 +631,38 @@ $rankColors = [
       </div>
       <div class="points-ranking-list" id="pointsRankingList" hidden aria-label="Jogadores ordenados por pontuação"></div>
     </form>
+
+    <?php if ($vacancyResult): ?>
+      <section class="vacancy-result results-section" id="resultado-vagas">
+        <div class="vacancy-result-header">
+          <div>
+            <span class="vacancy-kicker">Resultado</span>
+            <h2><?= $vacancyResult['vacancies'] ?> <?= $vacancyResult['vacancies'] === 1 ? 'JOGADOR SORTEADO' : 'JOGADORES SORTEADOS' ?></h2>
+            <p><?= $vacancyResult['vacancies'] ?> vaga(s) sorteada(s) entre <?= $vacancyResult['total'] ?> jogador(es) selecionado(s).</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('sortForm').scrollIntoView({behavior:'smooth', block:'start'})">🎲 Sortear novamente</button>
+        </div>
+        <div class="vacancy-winners">
+          <?php foreach ($vacancyResult['winners'] as $p): ?>
+            <div class="vacancy-player winner">
+              <span class="vacancy-check">✓</span>
+              <span><?= htmlspecialchars($p['name']) ?></span>
+              <span class="rank-pill rp-<?= $p['rank'] ?>">R<?= $p['rank'] ?></span>
+            </div>
+          <?php endforeach; ?>
+        </div>
+        <?php if (!empty($vacancyResult['notSelected'])): ?>
+          <div class="vacancy-not-selected">
+            <strong>Não sorteados</strong>
+            <div>
+              <?php foreach ($vacancyResult['notSelected'] as $p): ?>
+                <span><?= htmlspecialchars($p['name']) ?></span>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
+      </section>
+    <?php endif; ?>
 
     <?php if ($teams): ?>
       <div class="results-section">
@@ -575,9 +770,25 @@ $rankColors = [
     const sortSubmit = document.getElementById('sortSubmit');
     const manualRanksGrid = document.getElementById('manualRanksGrid');
     const pointsRankingList = document.getElementById('pointsRankingList');
+    const vacancyControl = document.getElementById('vacancyControl');
+    const vacanciesInput = document.getElementById('vacancies');
+    const drawDescription = document.getElementById('drawDescription');
+    const selLimit = document.getElementById('selLimit');
     let rankingReady = drawModeInput.value !== 'ranking';
     let leaderboardById = new Map();
     let leaderboardPlayers = [];
+
+    function changeVacancies(delta) {
+      const current = Number(vacanciesInput.value) || 1;
+      const next = Math.min(10, Math.max(1, current + delta));
+      vacanciesInput.value = next;
+    }
+
+    vacanciesInput.addEventListener('input', () => {
+      if (vacanciesInput.value === '') return;
+      const value = Math.min(10, Math.max(1, Number(vacanciesInput.value) || 1));
+      vacanciesInput.value = value;
+    });
 
     function normalizePlayerName(name) {
       return String(name || '')
@@ -742,10 +953,19 @@ $rankColors = [
     }
 
     function selectDrawMode(mode) {
-      drawModeInput.value = mode === 'ranking' ? 'ranking' : 'rank';
+      drawModeInput.value = ['rank', 'ranking', 'vacancies'].includes(mode) ? mode : 'rank';
       document.querySelectorAll('.draw-mode-option').forEach(button => {
         button.classList.toggle('active', button.dataset.mode === drawModeInput.value);
       });
+
+      const vacancyMode = drawModeInput.value === 'vacancies';
+      vacancyControl.hidden = !vacancyMode;
+      vacancyControl.style.display = vacancyMode ? 'flex' : 'none';
+      selLimit.textContent = vacancyMode ? '/ livre' : '/ 10';
+      drawDescription.textContent = vacancyMode
+        ? 'Selecione os jogadores que concorrem às vagas e deixe o sistema sortear quem entra.'
+        : 'Selecione 10 jogadores para gerar dois times equilibrados';
+      sortSubmit.textContent = vacancyMode ? 'Sortear Jogadores' : 'Sortear Times';
 
       if (drawModeInput.value === 'ranking') {
         renderPointRanking();
@@ -822,18 +1042,40 @@ $rankColors = [
     }
 
     sortForm.addEventListener('submit', event => {
+      // Evita que o update_selection agendado sobrescreva o resultado final
+      // no live_state.json depois que o sorteio for enviado.
+      clearTimeout(liveTimer);
+
+      const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
       if (drawModeInput.value === 'ranking' && !rankingReady) {
         event.preventDefault();
         alert('Ranking indisponível. Tente novamente.');
+        return;
+      }
+
+      if (drawModeInput.value === 'vacancies') {
+        const vacancies = Number(vacanciesInput.value);
+        if (checkedCount < 1) {
+          event.preventDefault();
+          alert('Selecione pelo menos 1 jogador.');
+          return;
+        }
+        if (!Number.isInteger(vacancies) || vacancies < 1 || vacancies > 10 || vacancies > checkedCount) {
+          event.preventDefault();
+          alert(`Informe entre 1 e ${checkedCount} vaga(s).`);
+          return;
+        }
+        return;
+      }
+
+      if (checkedCount !== 10) {
+        event.preventDefault();
+        alert(`Selecione exatamente 10 jogadores. Você selecionou ${checkedCount}.`);
       }
     });
 
-    if (drawModeInput.value === 'ranking') {
-      renderPointRanking();
-      loadRankingForDraw();
-    } else {
-      loadPlayerAvatars();
-    }
+    selectDrawMode(drawModeInput.value);
 
     function filterPlayers(query) {
       const normalize = (str) => str
@@ -879,7 +1121,9 @@ $rankColors = [
           },
           body: JSON.stringify({
             action: 'update_selection',
-            selected: checked
+            selected: checked,
+            draw_mode: drawModeInput.value,
+            vacancy_count: Number(vacanciesInput.value) || 1
           })
         }).catch(() => {});
       }, 250);
@@ -909,7 +1153,7 @@ $rankColors = [
       if (checkbox.checked) lbl.classList.add('checked');
       else lbl.classList.remove('checked');
 
-      if (checked.length > 10) {
+      if (drawModeInput.value !== 'vacancies' && checked.length > 10) {
         checkbox.checked = false;
         lbl.classList.remove('checked');
         document.getElementById('selCount').textContent = 10;
@@ -937,24 +1181,6 @@ $rankColors = [
   </script>
 
   <script src="history-clear.js"></script>
-
-  <?php if ($teams): ?>
-    <script>
-      // Assim que o resultado é calculado, publica no estado ao vivo e no histórico.
-      fetch('live_state.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'finish_draw',
-          record_history: false,
-          selected: <?= json_encode($rawSelected, JSON_UNESCAPED_UNICODE) ?>,
-          teams: <?= json_encode($teams, JSON_UNESCAPED_UNICODE) ?>
-        })
-      }).catch(() => {});
-    </script>
-  <?php endif; ?>
 
   <div class="copy">
     <footer>

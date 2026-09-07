@@ -244,8 +244,13 @@
       box.className =
         'status-box selecting';
 
-      box.textContent =
-        `🎯 Selecionando jogadores: ${state.selected.length} / 10`;
+      if (state.draw_mode === 'vacancies') {
+        box.textContent =
+          `🎯 Sortear Vagas: ${state.selected.length} jogadores selecionados • ${Number(state.vacancy_count || 1)} vaga(s)`;
+      } else {
+        box.textContent =
+          `🎯 Selecionando jogadores: ${state.selected.length} / 10`;
+      }
 
 
       const chips = state.selected
@@ -311,6 +316,96 @@
 
     }
 
+
+    /* =====================================================
+       RESULTADO — SORTEIO DE VAGAS
+    ====================================================== */
+
+    function renderVacancyDone(state) {
+      const box = document.getElementById('statusBox');
+
+      box.className = 'status-box done';
+
+      const result = state.vacancy_result || {};
+      const selected = Array.isArray(state.selected) ? state.selected : [];
+
+      box.textContent =
+        `🎯 Sorteio de vagas concluído: ${Number(result.vacancies || 0)} vaga(s) entre ${selected.length} jogadores`;
+
+      const selectedChips = selected.map(entry => {
+        const { rank, name } = parseEntry(entry);
+        const rankInfo = rankLabels[rank] || {
+          icon: '•',
+          label: `RANK ${rank}`
+        };
+
+        return `
+          <span class="live-chip rank-${rank}">
+            <span class="live-chip-icon">${rankInfo.icon}</span>
+            <span class="live-chip-name">${escapeHtml(name)}</span>
+            <span class="live-chip-rank">R${rank}</span>
+          </span>
+        `;
+      }).join('');
+
+      document.getElementById('liveArea').innerHTML = `
+        <section class="live-selection reveal">
+          <div class="live-section-label">JOGADORES SELECIONADOS</div>
+          <div class="live-players">
+            ${selectedChips}
+          </div>
+        </section>
+      `;
+
+      
+      const winners = Array.isArray(result.winners) ? result.winners : [];
+      const notSelected = Array.isArray(result.notSelected) ? result.notSelected : [];
+      const vacancies = Number(result.vacancies || winners.length || 0);
+      const total = Number(result.total || state.selected?.length || 0);
+
+      const winnerHtml = winners.map((player, index) => `
+        <div class="vacancy-player winner">
+          <span class="vacancy-check">✓</span>
+          <span>${index + 1}. ${escapeHtml(player.name || 'Jogador')}</span>
+        </div>
+      `).join('');
+
+      const notSelectedHtml = notSelected.map(player => `
+        <span>${escapeHtml(player.name || 'Jogador')}</span>
+      `).join('');
+
+      document.getElementById('resultsArea').innerHTML = `
+        <section class="results-section reveal vacancy-result">
+          <div class="live-result-heading">
+            <div>
+              <span class="live-result-kicker">RESULTADO FINAL</span>
+              <h2>🎯 ${vacancies} ${vacancies === 1 ? 'JOGADOR SORTEADO' : 'JOGADORES SORTEADOS'}</h2>
+            </div>
+            <div class="live-result-status">FINALIZADO</div>
+          </div>
+
+          <div class="vacancy-result-header">
+            <div>
+              <span class="vacancy-kicker">${vacancies} ${vacancies === 1 ? 'VAGA' : 'VAGAS'}</span>
+              <p>${vacancies} vaga(s) sorteada(s) entre ${total} jogador(es) selecionado(s).</p>
+            </div>
+          </div>
+
+          <div class="vacancy-winners">
+            ${winnerHtml}
+          </div>
+
+          ${notSelected.length ? `
+            <div class="vacancy-not-selected">
+              <strong>Não sorteados</strong>
+              <div>${notSelectedHtml}</div>
+            </div>
+          ` : ''}
+        </section>
+      `;
+
+      document.getElementById('mapsArea').innerHTML = '';
+    }
 
     /* =====================================================
        ESTADO FINALIZADO
@@ -475,10 +570,109 @@
 
           </div>
 
+          ${renderMatchResult(state.match)}
+
         </section>
 
       `;
 
+    }
+
+    function renderMatchResult(match) {
+      if (match && match.status === 'finished') {
+        const winner = match.winner === 'EMPATE'
+          ? '🤝 EMPATE'
+          : `🏆 Vencedor: ${escapeHtml(match.winner)}`;
+
+        return `
+          <div class="match-result-panel match-finished">
+            <div class="match-result-kicker">RESULTADO DA PARTIDA</div>
+
+            <div class="match-score">
+              <span>TIME 1</span>
+              <strong>${Number(match.score1)}</strong>
+              <b>×</b>
+              <strong>${Number(match.score2)}</strong>
+              <span>TIME 2</span>
+            </div>
+
+            <div class="match-winner">${winner}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="match-result-panel match-pending">
+          <div class="match-result-kicker">RESULTADO DA PARTIDA</div>
+          <p class="match-result-help">
+            Informe o placar quando a partida terminar.
+          </p>
+
+          <div class="match-score-form">
+            <label>
+              <span>TIME 1</span>
+              <input id="matchScore1" type="number" min="0" step="1" inputmode="numeric">
+            </label>
+
+            <span class="match-score-x">×</span>
+
+            <label>
+              <span>TIME 2</span>
+              <input id="matchScore2" type="number" min="0" step="1" inputmode="numeric">
+            </label>
+
+            <button type="button" class="btn btn-primary" onclick="finishMatch()">
+              🏆 Finalizar partida
+            </button>
+          </div>
+
+          <div id="matchResultMessage" class="match-result-message" aria-live="polite"></div>
+        </div>
+      `;
+    }
+
+    async function finishMatch() {
+      const input1 = document.getElementById('matchScore1');
+      const input2 = document.getElementById('matchScore2');
+      const message = document.getElementById('matchResultMessage');
+
+      if (!input1 || !input2) return;
+
+      const score1 = Number(input1.value);
+      const score2 = Number(input2.value);
+
+      if (!Number.isInteger(score1) || !Number.isInteger(score2) || score1 < 0 || score2 < 0) {
+        message.textContent = 'Informe um placar válido para os dois times.';
+        return;
+      }
+
+      message.textContent = 'Salvando resultado...';
+
+      try {
+        const response = await fetch('live_state.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'finish_match',
+            draw_id: window.currentDrawId || '',
+            score1,
+            score2
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Não foi possível salvar o resultado.');
+        }
+
+        message.textContent = 'Resultado salvo!';
+        poll();
+      } catch (error) {
+        message.textContent = error.message || 'Erro ao salvar o resultado.';
+      }
     }
 
     function renderMaps(mapsState) {
@@ -530,8 +724,11 @@
     function poll() {
 
       fetch(
-          'live_state.php?action=state', {
-            cache: 'no-store'
+          'live_state.php?action=state&_=' + Date.now(), {
+            cache: 'no-store',
+            headers: {
+              'Cache-Control': 'no-cache'
+            }
           }
         )
 
@@ -557,11 +754,18 @@
           const state =
             data.state;
 
+          window.currentDrawId = state.draw_id || '';
+
           const renderSignature = JSON.stringify({
             status: state.status,
             selected: state.selected || [],
             teams: state.teams || null,
             maps: state.maps || null,
+            match: state.match || null,
+            vacancy_result: state.vacancy_result || null,
+            draw_mode: state.draw_mode || null,
+            vacancy_count: state.vacancy_count || null,
+            draw_id: state.draw_id || null,
           });
 
           if (renderSignature !== lastRenderedSignature) {
@@ -571,6 +775,8 @@
               renderSelecting(state);
             } else if (state.status === 'done') {
               renderDone(state);
+            } else if (state.status === 'vacancies_done') {
+              renderVacancyDone(state);
             }
 
             renderMaps(state.maps);
