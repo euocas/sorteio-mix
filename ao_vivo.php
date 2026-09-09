@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sorteio Ao Vivo</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="src/icon.png">
 </head>
 
 <body class="live-page">
@@ -17,6 +18,10 @@
     ====================================================== -->
 
     <header class="site-header">
+
+    <!-- LOGO TOPO -->
+
+      <img src="src/logo.png" alt="Mix da Família GC" class="logo-topo">
 
       <!-- MENU -->
       <nav class="tabs">

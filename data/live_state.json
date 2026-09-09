@@ -6,7 +6,15 @@
         "3||COMPLETE 3|"
     ],
     "teams": null,
-    "maps": null,
+    "maps": {
+        "status": "done",
+        "selected": [
+            {
+                "name": "Cobblestone",
+                "image": "https:\/\/images.steamusercontent.com\/ugc\/2396566628393664695\/2E0B91D604EBB75D137A12DB87ED38336171C03A\/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+            }
+        ]
+    },
     "match": null,
     "vacancy_result": {
         "winners": [
@@ -37,5 +45,5 @@
     "draw_mode": "vacancies",
     "vacancy_count": 1,
     "draw_id": "vac_20260907_084004_45593840",
-    "updated_at": "2026-09-07T08:40:04+00:00"
+    "updated_at": "2026-09-08T17:00:50+00:00"
 }

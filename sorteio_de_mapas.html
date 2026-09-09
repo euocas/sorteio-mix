@@ -21,58 +21,31 @@
       <header class="sorteio-title site-header">
         <!-- MENU -->
         <nav class="tabs">
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'index.html'"
-          >
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'index.html'">
             Home
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'sorteio.php'"
-          >
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'sorteio.php'">
             Sorteio
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost active"
-            onclick="window.location.href = 'sorteio_de_mapas.html'"
-          >
+          <button type="button" class="btn btn-ghost active" onclick="window.location.href = 'sorteio_de_mapas.html'">
             Mapa
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'ao_vivo.php'"
-          >
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'ao_vivo.php'">
             Ao Vivo
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'ranking.php'"
-          >
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'ranking.php'">
             Ranking
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'historico.php'"
-          >
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'historico.php'">
             Histórico
           </button>
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'temporadas.php'"
-          >
+
+          <button type="button" class="btn btn-ghost" onclick="window.location.href = 'temporadas.php'">
             Temporadas
           </button>
         </nav>
@@ -177,86 +150,130 @@
         },
       ];
 
+      /*
+       * MAPAS JÁ SORTEADOS
+       *
+       * O estado fica salvo no navegador para que um refresh da página
+       * não libere novamente os mapas que já foram sorteados.
+       */
+      const drawnMaps = new Set(
+        JSON.parse(localStorage.getItem("drawnMaps") || "[]")
+      );
+
+      // Mapas selecionados para o próximo sorteio
       const selected = new Set();
+
+      function saveDrawnMaps() {
+        localStorage.setItem(
+          "drawnMaps",
+          JSON.stringify([...drawnMaps])
+        );
+      }
 
       function render() {
         const grid = document.getElementById("maps-grid");
 
         grid.innerHTML = maps
-          .map(
-            (m, i) => `
-          <div
-            class="map-card ${selected.has(i) ? "selected" : ""}"
-            onclick="toggle(${i})"
-          >
+          .map((m, i) => {
+            const isSelected = selected.has(i);
+            const isDrawn = drawnMaps.has(i);
 
-            ${
-              m.img
-                ? `
-                  <img
-                    class="map-img"
-                    src="${m.img}"
-                    alt="${m.name}"
-                    onerror="this.style.display='none'"
-                  >
-                `
-                : `
-                  <div class="map-img-placeholder">🗺</div>
-                `
-            }
+            return `
+              <div
+                class="map-card ${isSelected ? "selected" : ""} ${isDrawn ? "drawn" : ""}"
+                ${isDrawn ? "" : `onclick="toggle(${i})"`}
+              >
 
-            <div class="map-body">
+                ${
+                  m.img
+                    ? `
+                      <img
+                        class="map-img"
+                        src="${m.img}"
+                        alt="${m.name}"
+                        onerror="this.style.display='none'"
+                      >
+                    `
+                    : `
+                      <div class="map-img-placeholder">🗺</div>
+                    `
+                }
 
-              <div class="map-checkbox">
-                <svg
-                  width="11"
-                  height="11"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="2 6 5 9 10 3"></polyline>
-                </svg>
+                <div class="map-body">
+
+                  <div class="map-checkbox">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="2 6 5 9 10 3"></polyline>
+                    </svg>
+                  </div>
+
+                  <span class="map-name">
+                    ${m.name}
+                  </span>
+
+                  ${
+                    isDrawn
+                      ? `<span class="map-status">SORTEADO</span>`
+                      : ""
+                  }
+
+                </div>
+
               </div>
-
-              <span class="map-name">
-                ${m.name}
-              </span>
-
-            </div>
-
-          </div>
-        `,
-          )
+            `;
+          })
           .join("");
 
         document.getElementById("count").textContent = selected.size;
-        document.getElementById("btn-sort").disabled = selected.size < 1;
+
+        document.getElementById("btn-sort").disabled =
+          selected.size < 1;
       }
 
       function toggle(i) {
+        // Mapa já sorteado não pode ser selecionado novamente
+        if (drawnMaps.has(i)) {
+          return;
+        }
+
         if (selected.has(i)) {
           selected.delete(i);
         } else {
           selected.add(i);
         }
 
-        document.getElementById("result-panel").classList.remove("show");
+        document
+          .getElementById("result-panel")
+          .classList.remove("show");
 
-        document.getElementById("overlay").classList.remove("show");
+        document
+          .getElementById("overlay")
+          .classList.remove("show");
 
         render();
       }
 
       function clearAll() {
+        // Limpa somente a seleção atual.
+        // Os mapas já sorteados continuam bloqueados.
         selected.clear();
 
-        document.getElementById("result-panel").classList.remove("show");
+        document
+          .getElementById("result-panel")
+          .classList.remove("show");
 
-        document.getElementById("overlay").classList.remove("show");
+        document
+          .getElementById("overlay")
+          .classList.remove("show");
 
         render();
       }
@@ -264,39 +281,63 @@
       function sortear() {
         if (selected.size === 0) return;
 
-        const pool = [...selected];
+        // Segurança: nunca sorteia um mapa que já esteja na rotação concluída.
+        const pool = [...selected].filter(
+          (index) => !drawnMaps.has(index)
+        );
+
+        if (pool.length === 0) {
+          selected.clear();
+          render();
+          return;
+        }
+
+        // Embaralha o grupo selecionado
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
         }
 
         const winner = pool[0];
+
         const selectedMap = {
           name: maps[winner].name,
           image: maps[winner].img,
         };
 
+        // Marca o mapa vencedor como sorteado
+        drawnMaps.add(winner);
+
+        // Persiste a rotação no navegador
+        saveDrawnMaps();
+
+        // O vencedor deixa de fazer parte da seleção atual
+        selected.delete(winner);
+
         const panel = document.getElementById("result-panel");
-
         const overlay = document.getElementById("overlay");
-
         const res = document.getElementById("result-maps");
 
         res.innerHTML = `
-        <div class="result-map-card">
+          <div class="result-map-card">
 
-          <img
-            src="${maps[winner].img}"
-            alt="${maps[winner].name}"
-            class="result-map-image"
-          >
+            <img
+              src="${maps[winner].img}"
+              alt="${maps[winner].name}"
+              class="result-map-image"
+            >
 
-          <button type="button" class="result-map-badge winner" id="result-map-close" aria-label="Fechar resultado do mapa">
-            ${maps[winner].name}
-          </button>
+            <button
+              type="button"
+              class="result-map-badge winner"
+              id="result-map-close"
+              aria-label="Fechar resultado do mapa"
+            >
+              ${maps[winner].name}
+            </button>
 
-        </div>
-      `;
+          </div>
+        `;
 
         document
           .getElementById("result-map-close")
@@ -318,16 +359,46 @@
 
         panel.classList.add("show");
         overlay.classList.add("show");
+
+        render();
+
+        /*
+         * Quando todos os mapas da rotação forem sorteados,
+         * limpa automaticamente a rotação.
+         *
+         * O pequeno atraso permite que o último mapa continue
+         * aparecendo como "SORTEADO" antes da nova rotação começar.
+         */
+        if (drawnMaps.size >= maps.length) {
+          setTimeout(() => {
+            drawnMaps.clear();
+            localStorage.removeItem("drawnMaps");
+
+            selected.clear();
+
+            render();
+          }, 1500);
+        }
       }
 
       function closeResult() {
-        document.getElementById("overlay").classList.remove("show");
-        document.getElementById("result-panel").classList.remove("show");
+        document
+          .getElementById("overlay")
+          .classList.remove("show");
+
+        document
+          .getElementById("result-panel")
+          .classList.remove("show");
       }
 
-      document.getElementById("overlay").addEventListener("click", closeResult);
+      document
+        .getElementById("overlay")
+        .addEventListener("click", closeResult);
+
       document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") closeResult();
+        if (event.key === "Escape") {
+          closeResult();
+        }
       });
 
       render();

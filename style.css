@@ -1226,6 +1226,45 @@ header p {
   font-size: 14px;
 }
 
+
+/* =========================================================
+   MAPAS JÁ SORTEADOS
+   ========================================================= */
+
+.map-card.drawn {
+  opacity: 0.45;
+  filter: grayscale(0.8);
+  cursor: not-allowed;
+  pointer-events: none;
+  position: relative;
+}
+
+.map-card.drawn::after {
+  content: "SORTEADO";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.map-card.drawn .map-checkbox {
+  opacity: 0.8;
+}
+
+.map-status {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
 /* =========================================================
    GRID DE MAPAS
 ========================================================= */
