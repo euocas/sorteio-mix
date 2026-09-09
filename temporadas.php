@@ -32,11 +32,11 @@ $selectedSeason = $selectedKey !== null ? $seasons[$selectedKey] : null;
         <button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio.php'">Sorteio</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio_de_mapas.html'">Mapa</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='ao_vivo.php'">Ao Vivo</button>
-        <button type="button" class="btn btn-ghost" onclick="window.location.href='ranking.php'">Ranking</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='historico.php'">Histórico</button>
+        <button type="button" class="btn btn-ghost" onclick="window.location.href='ranking.php'">Ranking</button>
         <button type="button" class="btn btn-ghost active" onclick="window.location.href='temporadas.php'">Temporadas</button>
       </nav>
-      <h1>TEMPORADAS PASSADAS</h1>
+      <h1>TEMPORADAS</h1>
       <p>Ranking congelado de temporadas anteriores, apenas para consulta. Não altera nem conta para a pontuação atual.</p>
     </header>
 

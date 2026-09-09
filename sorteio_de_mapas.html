@@ -58,13 +58,6 @@
             Ao Vivo
           </button>
 
-          <button
-            type="button"
-            class="btn btn-ghost"
-            onclick="window.location.href = 'ranking.php'"
-          >
-            Ranking
-          </button>
 
           <button
             type="button"
@@ -72,6 +65,14 @@
             onclick="window.location.href = 'historico.php'"
           >
             Histórico
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="window.location.href = 'ranking.php'"
+          >
+            Ranking
           </button>
 
           <button
@@ -99,21 +100,33 @@
         </div>
 
         <div class="header-btns">
-          <button type="button" class="btn btn-ghost" onclick="clearAll()">
-            Limpar
-          </button>
+  <button
+    type="button"
+    class="btn btn-ghost"
+    id="btn-select-all"
+    onclick="selectAllAvailable()"
+  >
+    Selecionar todos
+  </button>
 
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="btn-sort"
-            onclick="sortear()"
-            disabled
-          >
-            SORTEAR MAPA
-          </button>
-        </div>
-      </div>
+  <button
+    type="button"
+    class="btn btn-ghost"
+    onclick="clearAll()"
+  >
+    Limpar
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-primary"
+    id="btn-sort"
+    onclick="sortear()"
+    disabled
+  >
+    SORTEAR MAPA
+  </button>
+</div>
 
       <!-- MAPAS -->
       <div class="maps-grid" id="maps-grid"></div>
@@ -282,6 +295,21 @@
 
         render();
       }
+
+      function selectAllAvailable() {
+  // Seleciona somente os mapas que ainda não foram sorteados
+  maps.forEach((map, index) => {
+    if (!drawnMaps.has(index)) {
+      selected.add(index);
+    }
+  });
+
+  // Fecha o resultado anterior, se houver
+  document.getElementById("result-panel").classList.remove("show");
+  document.getElementById("overlay").classList.remove("show");
+
+  render();
+}
 
       function clearAll() {
         // Limpa somente a seleção atual.

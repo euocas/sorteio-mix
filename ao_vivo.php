@@ -57,16 +57,18 @@
         <button
           type="button"
           class="btn btn-ghost"
-          onclick="window.location.href='ranking.php'">
-          Ranking
+          onclick="window.location.href='historico.php'">
+          Histórico
         </button>
 
         <button
           type="button"
           class="btn btn-ghost"
-          onclick="window.location.href='historico.php'">
-          Histórico
+          onclick="window.location.href='ranking.php'">
+          Ranking
         </button>
+
+        
 
         <button
           type="button"
@@ -162,27 +164,27 @@
 
       1: {
         label: 'RANK 1',
-        icon: '🔥'
+        icon: '🥇'
       },
 
       2: {
         label: 'RANK 2',
-        icon: '⚡'
+        icon: '🥈'
       },
 
       3: {
         label: 'RANK 3',
-        icon: '🎯'
+        icon: '🥉'
       },
 
       4: {
         label: 'RANK 4',
-        icon: '🧨'
+        icon: '🎖️'
       },
 
       5: {
         label: 'RANK 5',
-        icon: '🔫'
+        icon: '⍟'
       }
 
     };

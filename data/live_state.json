@@ -1,42 +1,34 @@
 {
     "status": "vacancies_done",
     "selected": [
-        "2||LEOZOX|",
-        "2||TODDY|",
-        "3||COMPLETE 3|"
+        "2|76561199532829551|POWERZIN|",
+        "2|76561198907178234|RAZEC|",
+        "2|76561199056467023|BAIANO|"
     ],
     "teams": null,
-    "maps": {
-        "status": "done",
-        "selected": [
-            {
-                "name": "Cobblestone",
-                "image": "https:\/\/images.steamusercontent.com\/ugc\/2396566628393664695\/2E0B91D604EBB75D137A12DB87ED38336171C03A\/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
-            }
-        ]
-    },
+    "maps": null,
     "match": null,
     "vacancy_result": {
         "winners": [
             {
-                "id": null,
-                "name": "LEOZOX",
+                "id": "76561198907178234",
+                "name": "RAZEC",
                 "lookup": "",
                 "rank": 2
             }
         ],
         "notSelected": [
             {
-                "id": null,
-                "name": "TODDY",
+                "id": "76561199056467023",
+                "name": "BAIANO",
                 "lookup": "",
                 "rank": 2
             },
             {
-                "id": null,
-                "name": "COMPLETE 3",
+                "id": "76561199532829551",
+                "name": "POWERZIN",
                 "lookup": "",
-                "rank": 3
+                "rank": 2
             }
         ],
         "total": 3,
@@ -44,6 +36,6 @@
     },
     "draw_mode": "vacancies",
     "vacancy_count": 1,
-    "draw_id": "vac_20260907_084004_45593840",
-    "updated_at": "2026-09-08T17:00:50+00:00"
+    "draw_id": "vac_20260909_065608_5d506e67",
+    "updated_at": "2026-09-09T06:56:08+00:00"
 }

@@ -1021,112 +1021,315 @@ header p {
 }
 
 /* =========================================================
-   TEMPORADAS
-========================================================= */
+   TEMPORADAS — MODERNO / COMPETITIVO
+   ========================================================= */
 
 .season-wrap {
-  padding-bottom: 35px;
+  position: relative;
+  width: 100%;
+  padding: 8px 0 45px;
+  isolation: isolate;
+}
+
+/* Área de destaque do topo */
+.season-wrap::before {
+  content: "♛";
+  position: absolute;
+  top: -35px;
+  right: 3%;
+  z-index: -1;
+  color: rgba(168, 85, 247, 0.10);
+  font-size: clamp(150px, 18vw, 260px);
+  line-height: 1;
+  pointer-events: none;
+  transform: rotate(8deg);
+  filter: blur(0.2px);
+}
+
+.season-header {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.season-header h1 {
+  background: linear-gradient(
+    90deg,
+    var(--white) 0%,
+    var(--white) 48%,
+    #a855f7 72%,
+    #c084fc 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .season-header p {
   max-width: 680px;
-  margin: 9px auto 0;
+  margin: 10px auto 0;
+  color: #858e99;
+  line-height: 1.65;
 }
 
+/* Seletor de temporada */
 .season-selector {
+  position: relative;
   width: 100%;
+  min-height: 82px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin: 0 0 14px;
-  padding: 13px 16px;
-  background: #0b0d10;
-  border: 1px solid var(--border);
+  gap: 20px;
+  margin: 0 0 18px;
+  padding: 15px 18px;
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.07), transparent 35%),
+    linear-gradient(180deg, #0f1217 0%, #090b0e 100%);
+  border: 1px solid #292e38;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 12px 35px rgba(0,0,0,0.22);
+  overflow: hidden;
+}
+
+.season-selector::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
 }
 
 .season-selector label {
-  color: #c5cad0;
-  font-size: 12px;
-  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
+}
+
+.season-selector label::after {
+  content: "Selecione a temporada para visualizar o ranking";
+  color: #68717d;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .season-selector select {
-  min-width: 220px;
-  padding: 8px 10px;
-  background: #111419;
-  border: 1px solid var(--border-light);
-  border-radius: 0;
+  min-width: 300px;
+  height: 46px;
+  padding: 0 42px 0 14px;
+  background-color: #111419;
+  border: 1px solid #3a414c;
+  border-radius: 9px;
   color: var(--text);
   font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
 }
 
+.season-selector select:hover {
+  background-color: #15181e;
+  border-color: #5a6370;
+}
+
+.season-selector select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+/* Card principal */
 .season-card {
+  position: relative;
   width: 100%;
-  background: #0b0d10;
-  border: 1px solid var(--border);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 58, 237, 0.07), transparent 30%),
+    #0b0d10;
+  border: 1px solid #292e38;
+  border-radius: 14px;
+  box-shadow:
+    0 20px 55px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
+/* Cabeçalho do ranking */
 .season-card-header {
+  min-height: 92px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 15px 16px;
-  background: #111318;
-  border-bottom: 1px solid var(--border);
-  color: #858e99;
-  font-size: 11px;
-  font-weight: 700;
+  gap: 18px;
+  padding: 18px 20px;
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.10), transparent 40%),
+    #101319;
+  border-bottom: 1px solid #292e38;
+}
+
+.season-card-header > div:first-child {
+  position: relative;
+  padding-left: 58px;
+}
+
+.season-card-header > div:first-child::before {
+  content: "♛";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+  border: 1px solid #a78bfa;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 21px;
+  box-shadow: 0 8px 24px rgba(124,58,237,0.25);
 }
 
 .season-card-header h2 {
   margin: 0 0 3px;
   color: var(--white);
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.4px;
   text-transform: uppercase;
 }
 
 .season-card-header span {
-  color: #747e89;
+  color: #7d8793;
+  font-size: 11px;
+  font-weight: 600;
 }
 
+.season-card-header > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid #2d333c;
+  border-radius: 8px;
+  color: #9ba4af;
+  white-space: nowrap;
+}
+
+.season-card-header > span::before {
+  content: "●";
+  color: #a855f7;
+  font-size: 9px;
+}
+
+/* Lista */
 .season-player-list {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 6px;
+  padding: 9px;
+  background: #090b0e;
 }
 
+/* Jogador */
 .season-player {
-  min-height: 48px;
+  position: relative;
+  min-height: 54px;
   display: grid;
-  grid-template-columns:
-    38px 30px minmax(150px, 1fr) minmax(150px, 1fr)
-    auto auto;
+  grid-template-columns: 48px 36px minmax(180px, 1fr) minmax(150px, 1fr) auto;
   align-items: center;
-  gap: 10px;
-  padding: 7px 9px;
-  background: #111419;
+  gap: 12px;
+  padding: 8px 13px;
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border: 1px solid transparent;
   border-left: 2px solid transparent;
+  border-radius: 8px;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 }
 
 .season-player:hover {
-  border-left-color: var(--orange);
-  background: #16191e;
+  background: linear-gradient(90deg, #171a21, #12151b);
+  border-color: #292f39;
+  border-left-color: #a855f7;
+  transform: translateX(2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+/* Top 3 */
+.season-player:nth-child(1),
+.season-player:nth-child(2),
+.season-player:nth-child(3) {
+  border-color: rgba(255,255,255,0.06);
+}
+
+.season-player:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(234,179,8,0.10), transparent 42%),
+    #151515;
+  border-left-color: #eab308;
+}
+
+.season-player:nth-child(2) {
+  background:
+    linear-gradient(90deg, rgba(148,163,184,0.09), transparent 42%),
+    #12151a;
+  border-left-color: #94a3b8;
+}
+
+.season-player:nth-child(3) {
+  background:
+    linear-gradient(90deg, rgba(234,88,12,0.09), transparent 42%),
+    #131416;
+  border-left-color: #f97316;
 }
 
 .season-position {
-  color: var(--orange);
-  font-size: 13px;
+  color: #7f8995;
+  font-size: 14px;
   font-weight: 900;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.season-player:nth-child(1) .season-position {
+  color: #facc15;
+  font-size: 17px;
+}
+
+.season-player:nth-child(2) .season-position {
+  color: #cbd5e1;
+  font-size: 16px;
+}
+
+.season-player:nth-child(3) .season-position {
+  color: #fb923c;
+  font-size: 16px;
 }
 
 .season-avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #303641;
   border-radius: 50%;
   object-fit: cover;
   background: #242a31;
@@ -1143,49 +1346,198 @@ header p {
 .season-player-name {
   min-width: 0;
   overflow: hidden;
-  color: #d3d7dc;
-  font-weight: 700;
+  color: #e3e6ea;
+  font-size: 13px;
+  font-weight: 800;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.season-player-rank,
-.season-stats {
+.season-player-rank {
   min-width: 0;
   overflow: hidden;
   color: #858e99;
   font-size: 11px;
+  font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.season-player-rank::before {
+  content: "✦ ";
+  color: #a855f7;
+}
+
 .season-player-points {
+  min-width: 95px;
   color: var(--white);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
+  text-align: right;
   white-space: nowrap;
 }
 
+.season-player-points::first-letter {
+  color: #fff;
+}
+
 .season-stats {
-  grid-column: 3 / -1;
   display: none;
 }
 
+/* Destaque visual da pontuação do líder */
+.season-player:nth-child(1) .season-player-points {
+  color: #facc15;
+  font-size: 15px;
+}
+
+/* Estado vazio */
 .season-empty,
 .season-empty-panel {
-  padding: 30px;
+  padding: 40px 30px;
   color: #747e89;
   text-align: center;
 }
 
 .season-empty-panel {
   background: #0b0d10;
-  border: 1px dashed var(--border-light);
+  border: 1px dashed #3a414c;
+  border-radius: 10px;
 }
 
 .season-empty-panel p {
   margin: 0 0 6px;
   color: var(--text);
+  font-weight: 800;
+}
+
+/* =========================================================
+   TEMPORADAS — RESPONSIVO
+========================================================= */
+
+@media (max-width: 900px) {
+  .season-wrap::before {
+    right: -5%;
+    opacity: 0.55;
+  }
+
+  .season-player {
+    grid-template-columns: 42px 34px minmax(140px, 1fr) auto;
+  }
+
+  .season-player-rank {
+    display: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .season-wrap {
+    padding-bottom: 30px;
+  }
+
+  .season-wrap::before {
+    top: 0;
+    right: -12%;
+    font-size: 170px;
+  }
+
+  .season-selector {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .season-selector select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .season-card {
+    border-radius: 10px;
+  }
+
+  .season-card-header {
+    min-height: 82px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .season-card-header > div:first-child {
+    padding-left: 52px;
+  }
+
+  .season-card-header > div:first-child::before {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .season-card-header h2 {
+    font-size: 17px;
+  }
+
+  .season-card-header > span {
+    align-self: flex-start;
+  }
+
+  .season-player-list {
+    padding: 6px;
+  }
+
+  .season-player {
+    grid-template-columns: 32px 30px minmax(0, 1fr) auto;
+    min-height: 50px;
+    gap: 7px;
+    padding: 7px 8px;
+  }
+
+  .season-position {
+    font-size: 12px;
+  }
+
+  .season-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .season-player-name {
+    font-size: 12px;
+  }
+
+  .season-player-points {
+    min-width: 0;
+    font-size: 11px;
+  }
+
+  .season-player:nth-child(1) .season-player-points {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .season-selector label::after {
+    font-size: 10px;
+  }
+
+  .season-card-header > span {
+    font-size: 10px;
+  }
+
+  .season-player {
+    grid-template-columns: 28px 28px minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+
+  .season-player-name {
+    font-size: 11px;
+  }
+
+  .season-player-points {
+    font-size: 10px;
+  }
 }
 
 /* =========================================================
@@ -1385,6 +1737,27 @@ header p {
     margin: 10px auto 15px;
     object-fit: contain;
 }
+
+/* Select do Time Vencedor */
+.winner-team-select {
+  background: #1b1b1b !important;
+  color: #fff !important;
+  border: 1px solid #ff7a00;
+  border-radius: 8px;
+}
+
+/* Opções da lista */
+.winner-team-select option {
+  background: #1b1b1b;
+  color: #fff;
+}
+
+/* Quando abrir/focar */
+.winner-team-select:focus {
+  border-color: #ff7a00;
+  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+}
+
 
 /* =========================================================
    CARD DE MAPA
@@ -3078,4 +3451,3468 @@ header p {
   .match-score-form input {
     width: 82px;
   }
+}
+
+/* =========================================================
+   DESIGN SYSTEM GLOBAL — MIX / MAPAS
+   Linguagem visual unificada com a tela TEMPORADAS
+   ========================================================= */
+
+:root {
+  --bg: #05060a;
+  --surface: #0b0d12;
+  --surface-2: #10131a;
+  --surface-3: #151922;
+  --border: #292e39;
+  --border-light: #3a414d;
+  --border-hover: #596272;
+  --purple: #a855f7;
+  --purple-dark: #7c3aed;
+  --purple-soft: rgba(168, 85, 247, 0.12);
+  --orange: #f5823a;
+  --orange-hover: #ff914c;
+  --green: #22c55e;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(124, 58, 237, 0.07), transparent 32%),
+    var(--bg);
+}
+
+/* HEADER / NAVEGAÇÃO */
+.site-header,
+.topo {
+  position: relative;
+}
+
+.tabs {
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+}
+
+.tabs .btn {
+  color: #8993a1;
+  transition: color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.tabs .btn:hover {
+  color: #fff;
+  background: rgba(168,85,247,.045);
+}
+
+.tabs .btn.active::after {
+  width: 46px;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #c084fc);
+  box-shadow: 0 0 12px rgba(168,85,247,.5);
+}
+
+/* TÍTULOS */
+header h1,
+.maps-page .sorteio-title h1,
+.live-page .live-title-line h1 {
+  background: linear-gradient(90deg, #fff 0%, #fff 48%, #a855f7 78%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+header p,
+.maps-page .sorteio-subtitle,
+.live-page .live-title p {
+  color: #858e99;
+}
+
+/* BOTÕES */
+.btn,
+.btn-primary,
+.btn-sortear,
+.btn-ghost,
+.btn-limpar {
+  border-radius: 9px;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.btn-primary,
+.btn-sortear {
+  background: linear-gradient(180deg, #171a22 0%, #0e1117 100%);
+  border-color: #3b424e;
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-sortear:hover:not(:disabled) {
+  background: rgba(168,85,247,.10);
+  border-color: var(--purple);
+  color: #c084fc;
+  box-shadow: 0 0 0 1px rgba(168,85,247,.08), 0 8px 24px rgba(0,0,0,.2);
+  transform: translateY(-1px);
+}
+
+.btn-ghost,
+.btn-limpar {
+  background: #0f1218;
+  border-color: #343b47;
+}
+
+.btn-ghost:hover,
+.btn-limpar:hover {
+  background: #151922;
+  border-color: #555e6c;
+  color: #fff;
+}
+
+/* ÁREAS / PAINÉIS GERAIS */
+.live-banner,
+.counter-bar,
+.sorteio-header,
+.status-box,
+.live-selection,
+.points-ranking-list,
+.history-item,
+.today-history-card,
+.empty-msg,
+.balance-info,
+.copy footer,
+.draw-mode-option,
+.match-result-panel,
+.history-match-result,
+.vacancy-control,
+.vacancy-player {
+  border-radius: 10px;
+}
+
+.counter-bar,
+.sorteio-header,
+.status-box,
+.live-selection,
+.history-item,
+.today-history-card,
+.empty-msg,
+.balance-info {
+  background: linear-gradient(135deg, rgba(168,85,247,.035), transparent 45%), #0b0d12;
+  border-color: #292e39;
+}
+
+/* MODO DE SORTEIO */
+.draw-mode-option {
+  background: linear-gradient(180deg, #151922 0%, #0d1015 100%);
+  border-color: #353c48;
+}
+
+.draw-mode-option:hover {
+  background: #171b23;
+  border-color: #596272;
+}
+
+.draw-mode-option.active,
+.draw-mode-option.active:hover {
+  background: rgba(168,85,247,.10);
+  border-color: var(--purple);
+  color: #c084fc;
+  box-shadow: inset 3px 0 0 var(--purple), 0 0 22px rgba(168,85,247,.06);
+}
+
+/* TIMES / RESULTADOS */
+.rank-card,
+.team-card {
+  border-radius: 12px;
+  border-color: #292e39;
+  background: #0b0d12;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.rank-header,
+.team-title {
+  background: linear-gradient(135deg, rgba(168,85,247,.055), transparent 50%), #11141b;
+  border-color: #292e39;
+}
+
+.team-player,
+.player-label,
+.points-ranking-list .player-label {
+  border-radius: 7px;
+}
+
+.team-player:hover,
+.player-label:hover {
+  background: #171b22;
+}
+
+.team-player:hover {
+  border-left-color: var(--purple);
+}
+
+.player-label.checked {
+  background: linear-gradient(90deg, #a855f7, #7c3aed);
+  color: #fff;
+}
+
+/* MAPAS */
+.maps-page .map-card {
+  border-radius: 12px;
+  border-color: #292e39;
+  background: #0b0d12;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18);
+}
+
+.maps-page .map-card:hover {
+  background: #10141b;
+  border-color: #515a68;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(0,0,0,.28);
+}
+
+.maps-page .map-card.selected {
+  border-color: var(--purple);
+  box-shadow:
+    inset 0 3px 0 var(--purple),
+    0 0 0 1px rgba(168,85,247,.12),
+    0 12px 30px rgba(124,58,237,.10);
+}
+
+.maps-page .map-body {
+  background: #11141b;
+  border-top-color: #292e39;
+}
+
+.maps-page .map-card.selected .map-checkbox {
+  background: linear-gradient(145deg, #a855f7, #7c3aed);
+  border-color: #a855f7;
+  color: #fff;
+}
+
+.maps-page .map-card.selected .map-name {
+  color: #c084fc;
+}
+
+.maps-page .result-panel {
+  border-radius: 14px;
+  border-color: #3a414d;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(168,85,247,.10), transparent 42%),
+    #0b0d12;
+}
+
+.maps-page .result-map-badge {
+  border-radius: 9px;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  border-color: #a855f7;
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(124,58,237,.22);
+}
+
+.maps-page .result-map-image {
+  border-radius: 10px;
+  border-color: #303743;
+}
+
+/* AO VIVO */
+.live-page .status-box,
+.live-page .live-selection,
+.live-page .live-result-heading,
+.live-page .team-card {
+  border-radius: 12px;
+}
+
+.live-page .status-box.selecting {
+  color: #c084fc;
+  border-color: rgba(168,85,247,.45);
+  background: linear-gradient(90deg, rgba(168,85,247,.08), #0b0d12, rgba(168,85,247,.04));
+}
+
+.live-page .live-chip {
+  border-radius: 8px;
+  background: #11151c;
+  border-color: #343b47;
+}
+
+.live-page .live-chip:hover {
+  border-color: #596272;
+}
+
+.live-page .team-player:hover {
+  border-left-color: var(--purple);
+}
+
+.live-page .live-result-status {
+  border-radius: 7px;
+}
+
+/* RANKING */
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  border-radius: 12px;
+  border-color: #292e39;
+  background: linear-gradient(135deg, rgba(168,85,247,.055), transparent 45%), #0b0d12;
+  box-shadow: 0 12px 35px rgba(0,0,0,.2);
+}
+
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  border: 1px solid #292e39;
+  border-radius: 12px;
+  background: #0b0d12;
+  overflow: hidden;
+}
+
+.ranking-page table,
+.ranking-page .ranking-table {
+  background: #0b0d12;
+}
+
+.ranking-page th {
+  background: #11141b;
+  color: #929cab;
+  border-bottom: 1px solid #303743;
+}
+
+.ranking-page td {
+  background: #0d1016;
+  border-bottom: 1px solid #202630;
+}
+
+.ranking-page tr:hover td {
+  background: #151922;
+}
+
+/* HISTÓRICO */
+.today-history-card,
+.history-item,
+.history-match-result {
+  box-shadow: 0 10px 28px rgba(0,0,0,.15);
+}
+
+.today-history-card {
+  border-left: 3px solid var(--purple);
+}
+
+.today-history-team strong,
+.vacancy-kicker {
+  color: #c084fc;
+}
+
+/* SORTEIO DE VAGAS */
+.vacancy-control,
+.vacancy-result,
+.vacancy-player {
+  background: #0b0d12;
+  border-color: #292e39;
+}
+
+.vacancy-step:hover {
+  background: rgba(168,85,247,.10);
+  color: #c084fc;
+}
+
+.vacancy-player.winner {
+  border-left-color: var(--green);
+  background: linear-gradient(90deg, rgba(34,197,94,.07), #0b0d12);
+}
+
+/* RESULTADO DA PARTIDA */
+.match-result-panel,
+.history-match-result {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(168,85,247,.08), transparent 45%),
+    #0b0d12;
+  border-color: #303743;
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+}
+
+.match-score input,
+.match-score-form input {
+  background: #11151c;
+  border-color: #39414d;
+  border-radius: 9px;
+  color: #fff;
+}
+
+.match-score-form input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(168,85,247,.12);
+  outline: none;
+}
+
+/* FOOTER */
+.copy {
+  border-top-color: rgba(255,255,255,.055);
+}
+
+.copy footer a:hover {
+  color: #c084fc;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar-thumb {
+  background: #303743;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #505a69;
+}
+
+/* MOBILE */
+@media (max-width: 650px) {
+  .season-selector,
+  .season-card,
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    border-radius: 10px;
+  }
+
+  .tabs {
+    border-bottom: 0;
+  }
+
+  .maps-page .map-card {
+    border-radius: 9px;
+  }
+
+  .match-result-panel,
+  .history-match-result {
+    border-radius: 10px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — IDENTIDADE VISUAL FINAL
+   Mesmo padrão da tela TEMPORADAS
+========================================================= */
+
+.ranking-page {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 45px;
+}
+
+.ranking-page::before {
+  content: "♛";
+  position: absolute;
+  top: -55px;
+  right: 3%;
+  z-index: -1;
+  color: rgba(168, 85, 247, 0.08);
+  font-size: clamp(150px, 18vw, 250px);
+  line-height: 1;
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+
+/* Título */
+.ranking-page h1,
+.ranking-page .ranking-title {
+  color: var(--white);
+}
+
+.ranking-page h1 {
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    #fff 48%,
+    #a855f7 72%,
+    #c084fc 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Pódio / Top 3 */
+.ranking-page .podium-grid,
+.ranking-page .ranking-podium,
+.ranking-page .top-players,
+.ranking-page .ranking-cards {
+  gap: 12px;
+  overflow: visible;
+}
+
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  position: relative;
+  min-height: 122px;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid #292e39;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(168,85,247,.10), transparent 42%),
+    linear-gradient(145deg, #11151b 0%, #0b0d12 100%);
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.025);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  transform: translateY(-2px);
+  border-color: #515a68;
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.28),
+    0 0 0 1px rgba(168,85,247,.06);
+}
+
+/* Barra lateral dos cards */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #a855f7;
+  opacity: .85;
+}
+
+.ranking-page .podium-card:nth-child(1)::before,
+.ranking-page .top-player-card:nth-child(1)::before {
+  background: #facc15;
+}
+
+.ranking-page .podium-card:nth-child(2)::before,
+.ranking-page .top-player-card:nth-child(2)::before {
+  background: #94a3b8;
+}
+
+.ranking-page .podium-card:nth-child(3)::before,
+.ranking-page .top-player-card:nth-child(3)::before {
+  background: #f97316;
+}
+
+/* Conteúdo do Top 3 */
+.ranking-page .podium-card h2,
+.ranking-page .podium-card h3,
+.ranking-page .ranking-card h2,
+.ranking-page .ranking-card h3,
+.ranking-page .top-player-card h2,
+.ranking-page .top-player-card h3 {
+  position: relative;
+  margin: 0;
+  color: #f4f5f7;
+  font-weight: 900;
+}
+
+.ranking-page .podium-card h2::before,
+.ranking-page .podium-card h3::before,
+.ranking-page .ranking-card h2::before,
+.ranking-page .ranking-card h3::before,
+.ranking-page .top-player-card h2::before,
+.ranking-page .top-player-card h3::before {
+  color: #a855f7;
+}
+
+/* Textos secundários dos cards */
+.ranking-page .podium-card p,
+.ranking-page .ranking-card p,
+.ranking-page .top-player-card p,
+.ranking-page .podium-card small,
+.ranking-page .ranking-card small,
+.ranking-page .top-player-card small {
+  color: #7f8995;
+}
+
+/* Primeiro colocado */
+.ranking-page .podium-card:first-child,
+.ranking-page .top-player-card:first-child {
+  border-color: rgba(250,204,21,.38);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(234,179,8,.10), transparent 45%),
+    linear-gradient(145deg, #151515 0%, #0b0d12 100%);
+}
+
+.ranking-page .podium-card:first-child h2,
+.ranking-page .podium-card:first-child h3,
+.ranking-page .top-player-card:first-child h2,
+.ranking-page .top-player-card:first-child h3 {
+  color: #fff;
+}
+
+/* Busca */
+.ranking-page .search-bar,
+.ranking-page .ranking-search,
+.ranking-page .search-container {
+  margin-bottom: 16px;
+}
+
+.ranking-page .search-input,
+.ranking-page input[type="search"] {
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid #303743;
+  border-radius: 9px;
+  background: #0e1116;
+  color: #e6e8eb;
+  outline: none;
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.ranking-page .search-input:hover,
+.ranking-page input[type="search"]:hover {
+  border-color: #4b5563;
+  background: #11151b;
+}
+
+.ranking-page .search-input:focus,
+.ranking-page input[type="search"]:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,.12);
+}
+
+/* Título "Classificação geral" */
+.ranking-page .ranking-section-title,
+.ranking-page .section-title {
+  color: #929cab;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+/* Tabela */
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  width: 100%;
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid #292e39;
+  border-radius: 12px;
+  background: #0b0d12;
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.ranking-page table,
+.ranking-page .ranking-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #0b0d12;
+}
+
+/* Cabeçalho */
+.ranking-page thead th,
+.ranking-page th {
+  height: 44px;
+  padding: 0 14px;
+  background: #11151b;
+  border-bottom: 1px solid #303743;
+  color: #858e99;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.ranking-page thead th:first-child,
+.ranking-page tbody td:first-child {
+  padding-left: 16px;
+}
+
+/* Linhas */
+.ranking-page tbody tr {
+  transition: background .15s ease;
+}
+
+.ranking-page tbody td,
+.ranking-page td {
+  height: 62px;
+  padding: 8px 14px;
+  background: #0d1016;
+  border-bottom: 1px solid #202630;
+  color: #d3d7dc;
+  font-size: 13px;
+}
+
+.ranking-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ranking-page tbody tr:hover td {
+  background: #151922;
+}
+
+/* Posição */
+.ranking-page tbody td:first-child {
+  color: #c084fc;
+  font-weight: 900;
+}
+
+/* Avatar */
+.ranking-page td img,
+.ranking-page .player-avatar,
+.ranking-page .ranking-avatar {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #303743;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #171b22;
+  vertical-align: middle;
+}
+
+/* Nome */
+.ranking-page .player-name,
+.ranking-page .player-name-text,
+.ranking-page .ranking-player-name,
+.ranking-page .table-player-name {
+  color: #eef0f3;
+  font-weight: 800;
+}
+
+/* Divisão */
+.ranking-page td .rank,
+.ranking-page td .division,
+.ranking-page td .player-rank,
+.ranking-page td small {
+  color: #7f8995;
+}
+
+/* Pontuação */
+.ranking-page td:nth-child(3),
+.ranking-page td .points,
+.ranking-page .player-points {
+  color: #fff;
+  font-weight: 900;
+}
+
+/* Percentuais / estatísticas */
+.ranking-page td strong {
+  color: #e9eaf0;
+  font-weight: 900;
+}
+
+/* Cabeçalho e conteúdo alinhados */
+.ranking-page th:nth-child(n+3),
+.ranking-page td:nth-child(n+3) {
+  text-align: left;
+}
+
+/* Scrollbar interna */
+.ranking-page .table-wrapper::-webkit-scrollbar,
+.ranking-page .ranking-table-wrapper::-webkit-scrollbar,
+.ranking-page .table-container::-webkit-scrollbar,
+.ranking-page .ranking-table-container::-webkit-scrollbar {
+  height: 7px;
+}
+
+.ranking-page .table-wrapper::-webkit-scrollbar-thumb,
+.ranking-page .ranking-table-wrapper::-webkit-scrollbar-thumb,
+.ranking-page .table-container::-webkit-scrollbar-thumb,
+.ranking-page .ranking-table-container::-webkit-scrollbar-thumb {
+  background: #343b47;
+  border-radius: 999px;
+}
+
+.ranking-page .table-wrapper::-webkit-scrollbar-thumb:hover,
+.ranking-page .ranking-table-wrapper::-webkit-scrollbar-thumb:hover,
+.ranking-page .table-container::-webkit-scrollbar-thumb:hover,
+.ranking-page .ranking-table-container::-webkit-scrollbar-thumb:hover {
+  background: #596272;
+}
+
+/* Responsivo */
+@media (max-width: 800px) {
+  .ranking-page .podium-grid,
+  .ranking-page .ranking-podium,
+  .ranking-page .top-players,
+  .ranking-page .ranking-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    min-height: 105px;
+  }
+
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    overflow-x: auto;
+  }
+
+  .ranking-page table,
+  .ranking-page .ranking-table {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 520px) {
+  .ranking-page::before {
+    right: -15%;
+    opacity: .5;
+  }
+
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .ranking-page thead th,
+  .ranking-page tbody td,
+  .ranking-page th,
+  .ranking-page td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — MESMO VISUAL DE TEMPORADAS
+========================================================= */
+
+.ranking-page {
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: 40px;
+}
+
+/* Remove elementos decorativos que destoam da tela Temporadas */
+.ranking-page::before {
+  display: none;
+}
+
+/* ---------------------------------------------------------
+   TOP 3
+--------------------------------------------------------- */
+
+.ranking-page .podium-grid,
+.ranking-page .ranking-podium,
+.ranking-page .top-players,
+.ranking-page .ranking-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  overflow: visible;
+}
+
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  position: relative;
+  min-width: 0;
+  min-height: 121px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background: #0b0d10;
+  border: 1px solid #292e35;
+  border-radius: 0;
+
+  box-shadow: none;
+
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  transform: none;
+  background: #101318;
+  border-color: #3a414a;
+  box-shadow: none;
+}
+
+/* Barra lateral dos três primeiros */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--orange);
+  opacity: 1;
+}
+
+.ranking-page .podium-card:nth-child(1)::before,
+.ranking-page .top-player-card:nth-child(1)::before {
+  background: var(--orange);
+}
+
+.ranking-page .podium-card:nth-child(2)::before,
+.ranking-page .top-player-card:nth-child(2)::before {
+  background: #343b45;
+}
+
+.ranking-page .podium-card:nth-child(3)::before,
+.ranking-page .top-player-card:nth-child(3)::before {
+  background: #343b45;
+}
+
+/* Títulos 1º / 2º / 3º */
+.ranking-page .podium-card h2,
+.ranking-page .podium-card h3,
+.ranking-page .ranking-card h2,
+.ranking-page .ranking-card h3,
+.ranking-page .top-player-card h2,
+.ranking-page .top-player-card h3 {
+  margin: 0 0 15px;
+  color: var(--orange);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+/* Nome do jogador */
+.ranking-page .podium-card .player-name,
+.ranking-page .podium-card .player-name-text,
+.ranking-page .podium-card .ranking-player-name,
+.ranking-page .podium-card h2 + *,
+.ranking-page .ranking-card .player-name,
+.ranking-page .ranking-card .player-name-text,
+.ranking-page .ranking-card .ranking-player-name,
+.ranking-page .top-player-card .player-name,
+.ranking-page .top-player-card .player-name-text,
+.ranking-page .top-player-card .ranking-player-name {
+  color: var(--white);
+}
+
+/* Caso o HTML use h2/h3 diretamente para o nome */
+.ranking-page .podium-card h2,
+.ranking-page .ranking-card h2,
+.ranking-page .top-player-card h2 {
+  color: var(--orange);
+}
+
+/* Texto de pontuação */
+.ranking-page .podium-card p,
+.ranking-page .ranking-card p,
+.ranking-page .top-player-card p,
+.ranking-page .podium-card small,
+.ranking-page .ranking-card small,
+.ranking-page .top-player-card small {
+  color: #747e89;
+}
+
+/* ---------------------------------------------------------
+   ÁREA "CLASSIFICAÇÃO GERAL" + BUSCA
+--------------------------------------------------------- */
+
+.ranking-page .ranking-toolbar,
+.ranking-page .ranking-header,
+.ranking-page .ranking-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 26px 0 12px;
+}
+
+.ranking-page .ranking-section-title,
+.ranking-page .section-title {
+  color: #858e99;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Busca compacta como no restante do sistema */
+.ranking-page .search-bar,
+.ranking-page .ranking-search,
+.ranking-page .search-container {
+  margin-bottom: 12px;
+}
+
+.ranking-page .search-input,
+.ranking-page input[type="search"] {
+  width: 240px;
+  height: 44px;
+  padding: 0 13px;
+  box-sizing: border-box;
+
+  background: #111419;
+  border: 1px solid #292e35;
+  border-radius: 0;
+
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+
+  transition:
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.ranking-page .search-input::placeholder,
+.ranking-page input[type="search"]::placeholder {
+  color: #69737f;
+}
+
+.ranking-page .search-input:hover,
+.ranking-page input[type="search"]:hover {
+  border-color: #3a414a;
+}
+
+.ranking-page .search-input:focus,
+.ranking-page input[type="search"]:focus {
+  background: #13161b;
+  border-color: var(--orange);
+  box-shadow: inset 2px 0 0 var(--orange);
+}
+
+/* ---------------------------------------------------------
+   TABELA
+--------------------------------------------------------- */
+
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 12px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  border: 1px solid #292e35;
+  border-radius: 0;
+  background: #0b0d10;
+  box-shadow: none;
+}
+
+.ranking-page table,
+.ranking-page .ranking-table {
+  width: 100%;
+  min-width: 720px;
+  max-width: none;
+
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  background: #0b0d10;
+}
+
+/* Cabeçalho */
+.ranking-page thead th,
+.ranking-page th {
+  height: 43px;
+  padding: 0 14px;
+
+  background: #111318;
+  border-bottom: 1px solid #292e35;
+
+  color: #858e99;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+/* Linhas */
+.ranking-page tbody td,
+.ranking-page td {
+  height: 60px;
+  padding: 8px 14px;
+
+  background: #0b0f14;
+  border-bottom: 1px solid #20242b;
+
+  color: #d3d7dc;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.ranking-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ranking-page tbody tr:hover td {
+  background: #11151a;
+}
+
+/* Posição */
+.ranking-page tbody td:first-child {
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* Nome e avatar */
+.ranking-page .player-name,
+.ranking-page .player-name-text,
+.ranking-page .ranking-player-name,
+.ranking-page .table-player-name {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+
+  color: #e3e6ea;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ranking-page td img,
+.ranking-page .player-avatar,
+.ranking-page .ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #303641;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #242a31;
+  vertical-align: middle;
+}
+
+/* Divisão / subtítulos */
+.ranking-page td small,
+.ranking-page td .rank,
+.ranking-page td .division,
+.ranking-page td .player-rank {
+  color: #747e89;
+  font-size: 10px;
+}
+
+/* Pontuação */
+.ranking-page td .points,
+.ranking-page .player-points {
+  color: var(--white);
+  font-weight: 900;
+}
+
+/* Mantém o cabeçalho e linhas visualmente limpos */
+.ranking-page th:not(:nth-child(2)),
+.ranking-page td:not(:nth-child(2)) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVO
+--------------------------------------------------------- */
+
+@media (max-width: 800px) {
+  .ranking-page .podium-grid,
+  .ranking-page .ranking-podium,
+  .ranking-page .top-players,
+  .ranking-page .ranking-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-page .ranking-toolbar,
+  .ranking-page .ranking-header,
+  .ranking-page .ranking-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ranking-page .search-input,
+  .ranking-page input[type="search"] {
+    width: 100%;
+  }
+
+  .ranking-page table,
+  .ranking-page .ranking-table {
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 520px) {
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    min-height: 105px;
+    padding: 16px;
+  }
+
+  .ranking-page thead th,
+  .ranking-page tbody td {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — VISUAL IDÊNTICO ÀS TEMPORADAS
+   A estrutura do Ranking permanece a mesma.
+   Somente a linguagem visual é igualada à tela Temporadas.
+========================================================= */
+
+.ranking-page {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: 45px;
+  isolation: isolate;
+}
+
+/* Mesmo título visual das Temporadas */
+.ranking-page h1 {
+  margin-bottom: 9px;
+  background: linear-gradient(
+    90deg,
+    var(--white) 0%,
+    var(--white) 48%,
+    #a855f7 72%,
+    #c084fc 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Mesmo padrão dos cards */
+.ranking-page .podium-grid,
+.ranking-page .ranking-podium,
+.ranking-page .top-players,
+.ranking-page .ranking-cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  overflow: visible;
+}
+
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  position: relative;
+  min-width: 0;
+  min-height: 121px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(168, 85, 247, 0.055),
+      transparent 45%
+    ),
+    #0b0d12;
+
+  border: 1px solid #292e39;
+  border-radius: 12px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.20);
+
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    box-shadow var(--transition);
+}
+
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  transform: none;
+  border-color: #515a68;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(168, 85, 247, 0.075),
+      transparent 45%
+    ),
+    #10141b;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.25);
+}
+
+/* Mesma barra lateral usada na temporada */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+}
+
+/* Primeiro colocado recebe o mesmo destaque competitivo */
+.ranking-page .podium-card:nth-child(1),
+.ranking-page .top-player-card:nth-child(1) {
+  border-color: rgba(234, 179, 8, 0.38);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(234, 179, 8, 0.10),
+      transparent 42%
+    ),
+    #151515;
+}
+
+.ranking-page .podium-card:nth-child(1)::before,
+.ranking-page .top-player-card:nth-child(1)::before {
+  background: #eab308;
+}
+
+.ranking-page .podium-card:nth-child(2)::before,
+.ranking-page .top-player-card:nth-child(2)::before {
+  background: #94a3b8;
+}
+
+.ranking-page .podium-card:nth-child(3)::before,
+.ranking-page .top-player-card:nth-child(3)::before {
+  background: #f97316;
+}
+
+/* Labels 1º / 2º / 3º */
+.ranking-page .podium-card .position,
+.ranking-page .podium-card .place,
+.ranking-page .ranking-card .position,
+.ranking-page .ranking-card .place,
+.ranking-page .top-player-card .position,
+.ranking-page .top-player-card .place {
+  color: #a855f7;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.ranking-page .podium-card:nth-child(1) .position,
+.ranking-page .podium-card:nth-child(1) .place,
+.ranking-page .top-player-card:nth-child(1) .position,
+.ranking-page .top-player-card:nth-child(1) .place {
+  color: #facc15;
+}
+
+/* Nomes */
+.ranking-page .podium-card h2,
+.ranking-page .podium-card h3,
+.ranking-page .ranking-card h2,
+.ranking-page .ranking-card h3,
+.ranking-page .top-player-card h2,
+.ranking-page .top-player-card h3 {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Textos secundários */
+.ranking-page .podium-card p,
+.ranking-page .ranking-card p,
+.ranking-page .top-player-card p,
+.ranking-page .podium-card small,
+.ranking-page .ranking-card small,
+.ranking-page .top-player-card small {
+  color: #7d8793;
+  font-size: 11px;
+}
+
+/* =========================================================
+   CLASSIFICAÇÃO + BUSCA
+   Mesmo acabamento da área de Temporadas
+========================================================= */
+
+.ranking-page .ranking-toolbar,
+.ranking-page .ranking-header,
+.ranking-page .ranking-controls {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 22px 0 12px;
+}
+
+.ranking-page .ranking-section-title,
+.ranking-page .section-title {
+  color: #858e99;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.ranking-page .search-input,
+.ranking-page input[type="search"] {
+  width: 270px;
+  height: 44px;
+  padding: 0 14px;
+
+  background: #111419;
+  border: 1px solid #3a414c;
+  border-radius: 9px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+}
+
+.ranking-page .search-input:hover,
+.ranking-page input[type="search"]:hover {
+  background: #15181e;
+  border-color: #5a6370;
+}
+
+.ranking-page .search-input:focus,
+.ranking-page input[type="search"]:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+/* =========================================================
+   TABELA — MESMO CARD DA TEMPORADA
+========================================================= */
+
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.07),
+      transparent 30%
+    ),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.ranking-page table,
+.ranking-page .ranking-table {
+  width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #0b0d10;
+}
+
+/* Cabeçalho */
+.ranking-page thead th,
+.ranking-page th {
+  height: 43px;
+  padding: 0 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(168, 85, 247, 0.10),
+      transparent 40%
+    ),
+    #101319;
+
+  border-bottom: 1px solid #292e38;
+
+  color: #858e99;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Linhas */
+.ranking-page tbody td,
+.ranking-page td {
+  height: 54px;
+  padding: 8px 14px;
+
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border-bottom: 3px solid #090b0e;
+
+  color: #d3d7dc;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.ranking-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ranking-page tbody tr:hover td {
+  background: linear-gradient(90deg, #171a21, #12151b);
+}
+
+/* Posição */
+.ranking-page tbody td:first-child {
+  color: #7f8995;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* Avatar */
+.ranking-page td img,
+.ranking-page .player-avatar,
+.ranking-page .ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #303641;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #242a31;
+}
+
+/* Nome */
+.ranking-page .player-name,
+.ranking-page .player-name-text,
+.ranking-page .ranking-player-name,
+.ranking-page .table-player-name {
+  color: #e3e6ea;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Divisão */
+.ranking-page td small,
+.ranking-page td .rank,
+.ranking-page td .division,
+.ranking-page td .player-rank {
+  color: #858e99;
+  font-size: 10px;
+}
+
+/* Pontos */
+.ranking-page td .points,
+.ranking-page .player-points {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* Destaque do primeiro colocado na tabela */
+.ranking-page tbody tr:first-child td:first-child,
+.ranking-page tbody tr:first-child .player-points {
+  color: #facc15;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+  .ranking-page .podium-grid,
+  .ranking-page .ranking-podium,
+  .ranking-page .top-players,
+  .ranking-page .ranking-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-page .ranking-toolbar,
+  .ranking-page .ranking-header,
+  .ranking-page .ranking-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ranking-page .search-input,
+  .ranking-page input[type="search"] {
+    width: 100%;
+  }
+
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    min-height: 105px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .ranking-page thead th,
+  .ranking-page tbody td {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — ESTILO DA TELA TEMPORADAS
+   ========================================================= */
+
+.ranking-page {
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: 45px;
+}
+
+/* ---------- CARDS DO TOP 3 ---------- */
+
+.ranking-page .podium-grid,
+.ranking-page .ranking-podium,
+.ranking-page .top-players,
+.ranking-page .ranking-cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  overflow: visible;
+}
+
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  position: relative;
+  min-width: 0;
+  min-height: 121px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.055), transparent 45%),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 12px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  transform: none;
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.07), transparent 45%),
+    #101318;
+  border-color: #3a414a;
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Barrinha lateral */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+}
+
+/* 1º lugar */
+.ranking-page .podium-card:nth-child(1),
+.ranking-page .top-player-card:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.10), transparent 42%),
+    #151515;
+  border-color: rgba(234, 179, 8, 0.38);
+}
+
+.ranking-page .podium-card:nth-child(1)::before,
+.ranking-page .top-player-card:nth-child(1)::before {
+  background: #eab308;
+}
+
+/* 2º */
+.ranking-page .podium-card:nth-child(2)::before,
+.ranking-page .top-player-card:nth-child(2)::before {
+  background: #94a3b8;
+}
+
+/* 3º */
+.ranking-page .podium-card:nth-child(3)::before,
+.ranking-page .top-player-card:nth-child(3)::before {
+  background: #f97316;
+}
+
+/* ---------- CLASSIFICAÇÃO ---------- */
+
+.ranking-page .ranking-toolbar,
+.ranking-page .ranking-header,
+.ranking-page .ranking-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 22px 0 12px;
+}
+
+/* ---------- BUSCA ---------- */
+
+.ranking-page .search-input,
+.ranking-page input[type="search"] {
+  width: 270px;
+  height: 44px;
+  padding: 0 14px;
+
+  background: #111419;
+  border: 1px solid #3a414c;
+  border-radius: 9px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+}
+
+.ranking-page .search-input:hover,
+.ranking-page input[type="search"]:hover {
+  background: #15181e;
+  border-color: #5a6370;
+}
+
+.ranking-page .search-input:focus,
+.ranking-page input[type="search"]:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+/* ---------- TABELA ---------- */
+
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background: #0b0d10;
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.ranking-page table,
+.ranking-page .ranking-table {
+  width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #0b0d10;
+}
+
+/* Cabeçalho */
+.ranking-page thead th,
+.ranking-page th {
+  height: 47px;
+  padding: 0 14px;
+
+  background: #111318;
+  border-bottom: 1px solid #292e38;
+
+  color: #858e99;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Linhas */
+.ranking-page tbody td,
+.ranking-page td {
+  height: 54px;
+  padding: 8px 14px;
+
+  background: #111419;
+  border-bottom: 3px solid #090b0e;
+
+  color: #d3d7dc;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.ranking-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ranking-page tbody tr:hover td {
+  background: #16191e;
+}
+
+/* Posição */
+.ranking-page tbody td:first-child {
+  color: #7f8995;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* Avatar */
+.ranking-page td img,
+.ranking-page .player-avatar,
+.ranking-page .ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #303641;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #242a31;
+}
+
+/* Nome */
+.ranking-page .player-name,
+.ranking-page .player-name-text,
+.ranking-page .ranking-player-name,
+.ranking-page .table-player-name {
+  color: #e3e6ea;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Pontos */
+.ranking-page td .points,
+.ranking-page .player-points {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* 1º da tabela */
+.ranking-page tbody tr:first-child td:first-child,
+.ranking-page tbody tr:first-child .player-points {
+  color: #facc15;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 800px) {
+  .ranking-page .podium-grid,
+  .ranking-page .ranking-podium,
+  .ranking-page .top-players,
+  .ranking-page .ranking-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-page .ranking-toolbar,
+  .ranking-page .ranking-header,
+  .ranking-page .ranking-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ranking-page .search-input,
+  .ranking-page input[type="search"] {
+    width: 100%;
+  }
+
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    min-height: 105px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — LINHAS DA TABELA = LINHAS DE TEMPORADAS
+   ========================================================= */
+
+/* O container externo continua sendo o card da Temporadas */
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  padding: 8px;
+  box-sizing: border-box;
+  background: #0b0d10;
+  border: 1px solid #292e38;
+  border-radius: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Cabeçalho separado das linhas */
+.ranking-page table,
+.ranking-page .ranking-table {
+  width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  background: transparent;
+}
+
+/* Cabeçalho */
+.ranking-page thead th,
+.ranking-page th {
+  height: 43px;
+  padding: 0 14px;
+  background: #101319;
+  border: 0;
+  border-bottom: 1px solid #292e38;
+  color: #858e99;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Primeira e última célula do cabeçalho */
+.ranking-page thead th:first-child {
+  border-radius: 8px 0 0 0;
+}
+
+.ranking-page thead th:last-child {
+  border-radius: 0 8px 0 0;
+}
+
+/* CADA LINHA vira um card, como .season-player */
+.ranking-page tbody tr {
+  position: relative;
+}
+
+/* Células */
+.ranking-page tbody td,
+.ranking-page td {
+  height: 54px;
+  padding: 8px 14px;
+  box-sizing: border-box;
+
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+
+  color: #d3d7dc;
+  font-size: 13px;
+  vertical-align: middle;
+
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+
+/* Arredondamento das linhas */
+.ranking-page tbody tr td:first-child {
+  border-left: 1px solid transparent;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr td:last-child {
+  border-right: 1px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Hover = mesmo comportamento das linhas de Temporadas */
+.ranking-page tbody tr:hover td {
+  background: linear-gradient(90deg, #171a21, #12151b);
+  border-top-color: #292f39;
+  border-bottom-color: #292f39;
+}
+
+.ranking-page tbody tr:hover td:first-child {
+  border-left-color: #a855f7;
+}
+
+.ranking-page tbody tr:hover td:last-child {
+  border-right-color: #292f39;
+}
+
+/* Top 3 exatamente com o tratamento das Temporadas */
+.ranking-page tbody tr:nth-child(1) td {
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.10), transparent 42%),
+    #151515;
+  border-top-color: rgba(234, 179, 8, 0.18);
+  border-bottom-color: rgba(234, 179, 8, 0.18);
+}
+
+.ranking-page tbody tr:nth-child(1) td:first-child {
+  border-left-color: #eab308;
+}
+
+.ranking-page tbody tr:nth-child(2) td {
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.09), transparent 42%),
+    #12151a;
+  border-top-color: rgba(148, 163, 184, 0.16);
+  border-bottom-color: rgba(148, 163, 184, 0.16);
+}
+
+.ranking-page tbody tr:nth-child(2) td:first-child {
+  border-left-color: #94a3b8;
+}
+
+.ranking-page tbody tr:nth-child(3) td {
+  background:
+    linear-gradient(90deg, rgba(249, 115, 22, 0.09), transparent 42%),
+    #131416;
+  border-top-color: rgba(249, 115, 22, 0.16);
+  border-bottom-color: rgba(249, 115, 22, 0.16);
+}
+
+.ranking-page tbody tr:nth-child(3) td:first-child {
+  border-left-color: #f97316;
+}
+
+/* Linhas 4+ */
+.ranking-page tbody tr:nth-child(n+4) td {
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border-color: transparent;
+}
+
+.ranking-page tbody tr:nth-child(n+4):hover td {
+  background: linear-gradient(90deg, #171a21, #12151b);
+}
+
+/* Posição */
+.ranking-page tbody td:first-child {
+  color: #7f8995;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.ranking-page tbody tr:nth-child(1) td:first-child {
+  color: #facc15;
+}
+
+.ranking-page tbody tr:nth-child(2) td:first-child {
+  color: #cbd5e1;
+}
+
+.ranking-page tbody tr:nth-child(3) td:first-child {
+  color: #fb923c;
+}
+
+/* Avatar exatamente no padrão da Temporadas */
+.ranking-page td img,
+.ranking-page .player-avatar,
+.ranking-page .ranking-avatar {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #303641;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #242a31;
+  vertical-align: middle;
+}
+
+/* Nome */
+.ranking-page .player-name,
+.ranking-page .player-name-text,
+.ranking-page .ranking-player-name,
+.ranking-page .table-player-name {
+  color: #e3e6ea;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Divisão */
+.ranking-page td small,
+.ranking-page td .rank,
+.ranking-page td .division,
+.ranking-page td .player-rank {
+  color: #858e99;
+  font-size: 10px;
+}
+
+/* Pontos */
+.ranking-page td .points,
+.ranking-page .player-points {
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.ranking-page tbody tr:nth-child(1) td .points,
+.ranking-page tbody tr:nth-child(1) .player-points {
+  color: #facc15;
+}
+
+/* Remove qualquer regra antiga que deixe a tabela "chapada" */
+.ranking-page tbody tr:last-child td {
+  border-bottom-width: 1px;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    padding: 6px;
+    border-radius: 10px;
+  }
+}
+
+
+/* =========================================================
+   CORREÇÃO FINAL — CANTOS ARREDONDADOS DAS LINHAS DO RANKING
+   Igual ao .season-player da tela TEMPORADAS
+========================================================= */
+
+/* Cada linha funciona como um card individual */
+.ranking-page tbody tr {
+  position: relative;
+}
+
+/* Todas as células recebem o mesmo acabamento do season-player */
+.ranking-page tbody tr > td {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
+/* Canto superior/inferior esquerdo */
+.ranking-page tbody tr > td:first-child {
+  border-left: 1px solid transparent;
+  border-radius: 8px 0 0 8px;
+}
+
+/* Canto superior/inferior direito */
+.ranking-page tbody tr > td:last-child {
+  border-right: 1px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+/* IMPORTANTE:
+   remove o efeito de tabela contínua e cria espaço visual entre cards */
+.ranking-page table,
+.ranking-page .ranking-table {
+  border-collapse: separate !important;
+  border-spacing: 0 3px !important;
+}
+
+/* Fundo padrão das linhas */
+.ranking-page tbody tr > td {
+  background: linear-gradient(90deg, #111419, #0f1217);
+}
+
+/* Hover */
+.ranking-page tbody tr:hover > td {
+  background: linear-gradient(90deg, #171a21, #12151b);
+  border-top-color: #292f39;
+  border-bottom-color: #292f39;
+}
+
+.ranking-page tbody tr:hover > td:first-child {
+  border-left-color: #a855f7;
+}
+
+.ranking-page tbody tr:hover > td:last-child {
+  border-right-color: #292f39;
+}
+
+/* =========================================================
+   TOP 3 — MESMO ARREDONDAMENTO + MESMO FUNDO DE TEMPORADAS
+========================================================= */
+
+/* 1º lugar */
+.ranking-page tbody tr:nth-child(1) > td {
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.10), transparent 42%),
+    #151515;
+
+  border-top-color: rgba(234, 179, 8, 0.18);
+  border-bottom-color: rgba(234, 179, 8, 0.18);
+}
+
+.ranking-page tbody tr:nth-child(1) > td:first-child {
+  border-left-color: #eab308;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr:nth-child(1) > td:last-child {
+  border-right-color: rgba(234, 179, 8, 0.18);
+  border-radius: 0 8px 8px 0;
+}
+
+/* 2º lugar */
+.ranking-page tbody tr:nth-child(2) > td {
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.09), transparent 42%),
+    #12151a;
+
+  border-top-color: rgba(148, 163, 184, 0.16);
+  border-bottom-color: rgba(148, 163, 184, 0.16);
+}
+
+.ranking-page tbody tr:nth-child(2) > td:first-child {
+  border-left-color: #94a3b8;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr:nth-child(2) > td:last-child {
+  border-right-color: rgba(148, 163, 184, 0.16);
+  border-radius: 0 8px 8px 0;
+}
+
+/* 3º lugar */
+.ranking-page tbody tr:nth-child(3) > td {
+  background:
+    linear-gradient(90deg, rgba(249, 115, 22, 0.09), transparent 42%),
+    #131416;
+
+  border-top-color: rgba(249, 115, 22, 0.16);
+  border-bottom-color: rgba(249, 115, 22, 0.16);
+}
+
+.ranking-page tbody tr:nth-child(3) > td:first-child {
+  border-left-color: #f97316;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr:nth-child(3) > td:last-child {
+  border-right-color: rgba(249, 115, 22, 0.16);
+  border-radius: 0 8px 8px 0;
+}
+
+/* 4º em diante */
+.ranking-page tbody tr:nth-child(n+4) > td {
+  border-color: transparent;
+}
+
+.ranking-page tbody tr:nth-child(n+4) > td:first-child {
+  border-left-color: transparent;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr:nth-child(n+4) > td:last-child {
+  border-right-color: transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+/* =========================================================
+   CONTAINER — CANTOS EXTERNOS IGUAIS AO TEMPORADAS
+========================================================= */
+
+.ranking-page .table-wrapper,
+.ranking-page .ranking-table-wrapper,
+.ranking-page .table-container,
+.ranking-page .ranking-table-container {
+  padding: 8px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Permite scroll horizontal somente quando realmente necessário */
+@media (max-width: 800px) {
+  .ranking-page .table-wrapper,
+  .ranking-page .ranking-table-wrapper,
+  .ranking-page .table-container,
+  .ranking-page .ranking-table-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+
+/* =========================================================
+   RANKING — TOP 3 COM O MESMO ACABAMENTO DE TEMPORADAS
+========================================================= */
+
+.ranking-page .podium-grid,
+.ranking-page .ranking-podium,
+.ranking-page .top-players,
+.ranking-page .ranking-cards {
+  gap: 12px;
+}
+
+/* Card */
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  position: relative;
+  min-height: 121px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.06), transparent 48%),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 12px;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    transform var(--transition);
+}
+
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  transform: translateY(-2px);
+  border-color: #454d59;
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.08), transparent 48%),
+    #101318;
+}
+
+/* Barra lateral */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #a855f7;
+}
+
+/* 1º lugar */
+.ranking-page .podium-card:nth-child(1),
+.ranking-page .top-player-card:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.10), transparent 48%),
+    #151515;
+  border-color: #292e38;
+}
+
+.ranking-page .podium-card:nth-child(1)::before,
+.ranking-page .top-player-card:nth-child(1)::before {
+  background: #eab308;
+}
+
+/* 2º lugar */
+.ranking-page .podium-card:nth-child(2),
+.ranking-page .top-player-card:nth-child(2) {
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08), transparent 48%),
+    #12151a;
+}
+
+.ranking-page .podium-card:nth-child(2)::before,
+.ranking-page .top-player-card:nth-child(2)::before {
+  background: #94a3b8;
+}
+
+/* 3º lugar */
+.ranking-page .podium-card:nth-child(3),
+.ranking-page .top-player-card:nth-child(3) {
+  background:
+    linear-gradient(90deg, rgba(249, 115, 22, 0.08), transparent 48%),
+    #131416;
+}
+
+.ranking-page .podium-card:nth-child(3)::before,
+.ranking-page .top-player-card:nth-child(3)::before {
+  background: #f97316;
+}
+
+/* Título do lugar */
+.ranking-page .podium-card .position,
+.ranking-page .podium-card .place,
+.ranking-page .ranking-card .position,
+.ranking-page .ranking-card .place,
+.ranking-page .top-player-card .position,
+.ranking-page .top-player-card .place {
+  margin-bottom: 14px;
+  color: #a855f7;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .8px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ranking-page .podium-card:nth-child(1) .position,
+.ranking-page .podium-card:nth-child(1) .place,
+.ranking-page .top-player-card:nth-child(1) .position,
+.ranking-page .top-player-card:nth-child(1) .place {
+  color: #facc15;
+}
+
+/* Nome */
+.ranking-page .podium-card h2,
+.ranking-page .podium-card h3,
+.ranking-page .ranking-card h2,
+.ranking-page .ranking-card h3,
+.ranking-page .top-player-card h2,
+.ranking-page .top-player-card h3 {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 8px;
+
+  overflow: hidden;
+
+  color: #f1f3f5;
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pontuação */
+.ranking-page .podium-card p,
+.ranking-page .ranking-card p,
+.ranking-page .top-player-card p,
+.ranking-page .podium-card small,
+.ranking-page .ranking-card small,
+.ranking-page .top-player-card small {
+  margin: 0;
+  color: #7d8793;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+/* Pontuação do líder */
+.ranking-page .podium-card:nth-child(1) p,
+.ranking-page .top-player-card:nth-child(1) p,
+.ranking-page .podium-card:nth-child(1) small,
+.ranking-page .top-player-card:nth-child(1) small {
+  color: #aeb5bd;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card {
+    min-height: 110px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .ranking-page .podium-card h2,
+  .ranking-page .podium-card h3,
+  .ranking-page .ranking-card h2,
+  .ranking-page .ranking-card h3,
+  .ranking-page .top-player-card h2,
+  .ranking-page .top-player-card h3 {
+    font-size: 17px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — TOP 3 COM ARREDONDAMENTO IGUAL À TEMPORADA
+========================================================= */
+
+/* O card de cada colocação acompanha o mesmo acabamento
+   arredondado usado nos cards da tela Temporadas. */
+.ranking-page .podium-card,
+.ranking-page .ranking-card,
+.ranking-page .top-player-card {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Mantém a borda acompanhando o arredondamento */
+.ranking-page .podium-card::before,
+.ranking-page .ranking-card::before,
+.ranking-page .top-player-card::before {
+  border-radius: 12px 0 0 12px;
+}
+
+/* O primeiro card recebe o mesmo destaque da temporada,
+   mas continua com os quatro cantos arredondados. */
+.ranking-page .podium-card:nth-child(1),
+.ranking-page .top-player-card:nth-child(1) {
+  border-radius: 12px !important;
+}
+
+/* Segundo e terceiro */
+.ranking-page .podium-card:nth-child(2),
+.ranking-page .top-player-card:nth-child(2),
+.ranking-page .podium-card:nth-child(3),
+.ranking-page .top-player-card:nth-child(3) {
+  border-radius: 12px !important;
+}
+
+/* Garante que nenhum estilo anterior zere o arredondamento */
+.ranking-page .podium-card:hover,
+.ranking-page .ranking-card:hover,
+.ranking-page .top-player-card:hover {
+  border-radius: 12px !important;
+}
+
+/* Responsivo: mesmo arredondamento da temporada em telas menores */
+@media (max-width: 800px) {
+  .ranking-page .podium-card,
+  .ranking-page .ranking-card,
+  .ranking-page .top-player-card,
+  .ranking-page .podium-card:hover,
+  .ranking-page .ranking-card:hover,
+  .ranking-page .top-player-card:hover {
+    border-radius: 10px !important;
+  }
+}
+
+
+/* =========================================================
+   TOP PLAYER — MESMO ESTILO DO SEASON-SELECTOR
+========================================================= */
+
+.top-player {
+  position: relative;
+  width: 100%;
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin: 0 0 18px;
+  padding: 15px 18px;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.07), transparent 35%),
+    linear-gradient(180deg, #0f1217 0%, #090b0e 100%);
+
+  border: 1px solid #292e38;
+  border-radius: 12px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 12px 35px rgba(0,0,0,0.22);
+
+  overflow: hidden;
+}
+
+/* Barra roxa exatamente como no season-selector */
+.top-player::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+}
+
+/* Conteúdo interno */
+.top-player > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Título */
+.top-player h1,
+.top-player h2,
+.top-player h3,
+.top-player .title,
+.top-player .top-player-title {
+  margin: 0;
+  color: var(--white);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+/* Texto secundário */
+.top-player p,
+.top-player small,
+.top-player .subtitle,
+.top-player .top-player-subtitle {
+  margin: 4px 0 0;
+  color: #68717d;
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Se existir select dentro do top-player,
+   fica idêntico ao select de season-selector */
+.top-player select {
+  min-width: 300px;
+  height: 46px;
+  padding: 0 42px 0 14px;
+  box-sizing: border-box;
+
+  background-color: #111419;
+  border: 1px solid #3a414c;
+  border-radius: 9px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background var(--transition);
+}
+
+.top-player select:hover {
+  background-color: #15181e;
+  border-color: #5a6370;
+}
+
+.top-player select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,.12);
+}
+
+/* Se o nome do jogador estiver dentro do top-player */
+.top-player .player-name,
+.top-player .top-player-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsivo */
+@media (max-width: 650px) {
+  .top-player {
+    min-height: 82px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .top-player select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL — TOP 3
+   Remove a borda laranja do 1º lugar.
+   O destaque dourado permanece apenas nos detalhes internos.
+========================================================= */
+
+.ranking-page .top-player-card:first-child,
+.ranking-page .podium-card:first-child,
+.ranking-page .ranking-card:first-child {
+  border-color: #292e38 !important;
+}
+
+/* Mantém a mesma borda neutra também no hover */
+.ranking-page .top-player-card:first-child:hover,
+.ranking-page .podium-card:first-child:hover,
+.ranking-page .ranking-card:first-child:hover {
+  border-color: #454d59 !important;
+}
+
+/* A barra lateral continua identificando o 1º lugar */
+.ranking-page .top-player-card:first-child::before,
+.ranking-page .podium-card:first-child::before,
+.ranking-page .ranking-card:first-child::before {
+  background: #eab308;
+}
+
+
+/* =========================================================
+   CORREÇÃO DEFINITIVA — .top-player
+   O HTML do Ranking utiliza .top-player.
+   Remove a borda laranja do 1º card sem remover o
+   destaque amarelo da posição.
+========================================================= */
+
+/* Todos os cards Top Player usam a borda neutra */
+.ranking-page .top-player {
+  border: 1px solid #292e38 !important;
+}
+
+/* O primeiro card NÃO recebe borda laranja/amarela */
+.ranking-page .top-player:first-child,
+.ranking-page .top-player:nth-child(1) {
+  border: 1px solid #292e38 !important;
+  border-color: #292e38 !important;
+}
+
+/* Hover continua neutro */
+.ranking-page .top-player:first-child:hover,
+.ranking-page .top-player:nth-child(1):hover {
+  border: 1px solid #454d59 !important;
+  border-color: #454d59 !important;
+}
+
+/* Mantém apenas a identificação lateral do 1º lugar */
+.ranking-page .top-player:first-child::before,
+.ranking-page .top-player:nth-child(1)::before {
+  border-radius: 12px 0 0 12px;
+}
+
+/* Caso exista uma regra inline ou seletor de alta prioridade
+   aplicado diretamente ao primeiro Top Player */
+.ranking-page .top-player[style] {
+  border-color: #292e38 !important;
+}
+
+
+/* =========================================================
+   TOP PLAYER — COLOCAÇÃO ACIMA DO NOME
+========================================================= */
+
+/* O conteúdo do card passa a ficar organizado verticalmente */
+.ranking-page .top-player {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  padding: 16px 20px;
+}
+
+/* Colocação fica sempre na linha de cima */
+.ranking-page .top-player .position,
+.ranking-page .top-player .place,
+.ranking-page .top-player .top-player-position,
+.ranking-page .top-player .placement {
+  order: 1;
+  display: block;
+  width: 100%;
+  margin: 0;
+  color: #a855f7;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+/* 1º lugar mantém destaque dourado somente no texto */
+.ranking-page .top-player:first-child .position,
+.ranking-page .top-player:first-child .place,
+.ranking-page .top-player:first-child .top-player-position,
+.ranking-page .top-player:first-child .placement {
+  color: #facc15;
+}
+
+/* Nome fica logo abaixo da colocação */
+.ranking-page .top-player .player-name,
+.ranking-page .top-player .top-player-name,
+.ranking-page .top-player .name {
+  order: 2;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+
+  color: var(--white);
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -.4px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pontos ficam abaixo do nome */
+.ranking-page .top-player .points,
+.ranking-page .top-player .player-points,
+.ranking-page .top-player .score {
+  order: 3;
+  display: block;
+  margin: 0;
+  color: #7d8793;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* Se a estrutura usa elementos genéricos dentro do card,
+   mantém a colocação no topo e o nome abaixo. */
+.ranking-page .top-player .top-player-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Responsivo */
+@media (max-width: 800px) {
+  .ranking-page .top-player {
+    padding: 15px 16px;
+  }
+
+  .ranking-page .top-player .player-name,
+  .ranking-page .top-player .top-player-name,
+  .ranking-page .top-player .name {
+    font-size: 17px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — CABEÇALHO IGUAL AO CARD DE TEMPORADAS
+========================================================= */
+
+/* Container do cabeçalho do Ranking */
+.ranking-page .ranking-card-header,
+.ranking-page .ranking-season-header,
+.ranking-page .season-card-header {
+  position: relative;
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.10), transparent 40%),
+    #101319;
+
+  border-bottom: 1px solid #292e38;
+}
+
+/* Área esquerda */
+.ranking-page .ranking-card-header > div:first-child,
+.ranking-page .ranking-season-header > div:first-child,
+.ranking-page .season-card-header > div:first-child {
+  position: relative;
+  min-width: 0;
+  padding-left: 58px;
+}
+
+/* Ícone de coroa — exatamente no padrão de Temporadas */
+.ranking-page .ranking-card-header > div:first-child::before,
+.ranking-page .ranking-season-header > div:first-child::before,
+.ranking-page .season-card-header > div:first-child::before {
+  content: "♛";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  transform: translateY(-50%);
+
+  background: linear-gradient(145deg, #8b5cf6, #6d28d9);
+  border: 1px solid #a78bfa;
+  border-radius: 10px;
+
+  color: #fff;
+  font-size: 21px;
+
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+}
+
+/* Título */
+.ranking-page .ranking-card-header h2,
+.ranking-page .ranking-card-header h3,
+.ranking-page .ranking-season-header h2,
+.ranking-page .ranking-season-header h3,
+.ranking-page .season-card-header h2,
+.ranking-page .season-card-header h3 {
+  margin: 0 0 3px;
+  color: var(--white);
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  text-transform: uppercase;
+}
+
+/* Subtítulo */
+.ranking-page .ranking-card-header span,
+.ranking-page .ranking-season-header span,
+.ranking-page .season-card-header span {
+  color: #7d8793;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Badge "34 jogadores" */
+.ranking-page .ranking-card-header > span:last-child,
+.ranking-page .ranking-season-header > span:last-child,
+.ranking-page .season-card-header > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 11px;
+
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid #2d333c;
+  border-radius: 8px;
+
+  color: #9ba4af;
+  white-space: nowrap;
+}
+
+/* Ponto roxo do badge */
+.ranking-page .ranking-card-header > span:last-child::before,
+.ranking-page .ranking-season-header > span:last-child::before,
+.ranking-page .season-card-header > span:last-child::before {
+  content: "●";
+  color: #a855f7;
+  font-size: 9px;
+}
+
+/* =========================================================
+   RANKING — CASO O CABEÇALHO SEJA .top-player
+========================================================= */
+
+.ranking-page .top-player {
+  position: relative;
+  width: 100%;
+  min-height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(135deg, rgba(168, 85, 247, 0.10), transparent 40%),
+    #101319;
+
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+  overflow: hidden;
+}
+
+/* Barra roxa lateral */
+.ranking-page .top-player::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+}
+
+/* Conteúdo */
+.ranking-page .top-player > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Se houver título principal */
+.ranking-page .top-player h1,
+.ranking-page .top-player h2,
+.ranking-page .top-player h3 {
+  margin: 0 0 3px;
+  color: var(--white);
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  text-transform: uppercase;
+}
+
+/* Subtítulo */
+.ranking-page .top-player p,
+.ranking-page .top-player small {
+  margin: 0;
+  color: #7d8793;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Select, quando existir */
+.ranking-page .top-player select {
+  min-width: 300px;
+  height: 46px;
+  padding: 0 42px 0 14px;
+  box-sizing: border-box;
+
+  background-color: #111419;
+  border: 1px solid #3a414c;
+  border-radius: 9px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  outline: none;
+}
+
+.ranking-page .top-player select:hover {
+  background-color: #15181e;
+  border-color: #5a6370;
+}
+
+.ranking-page .top-player select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.12);
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .ranking-page .ranking-card-header,
+  .ranking-page .ranking-season-header,
+  .ranking-page .season-card-header {
+    min-height: 82px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .ranking-page .ranking-card-header > div:first-child,
+  .ranking-page .ranking-season-header > div:first-child,
+  .ranking-page .season-card-header > div:first-child {
+    padding-left: 52px;
+  }
+
+  .ranking-page .ranking-card-header > div:first-child::before,
+  .ranking-page .ranking-season-header > div:first-child::before,
+  .ranking-page .season-card-header > div:first-child::before {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .ranking-page .top-player {
+    min-height: 82px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .ranking-page .top-player select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+
+/* =========================================================
+   TOP 3 — CORREÇÃO DO NOME LONGO
+   Evita que nomes grandes ultrapassem o card.
+========================================================= */
+
+.ranking-page .top-player {
+  min-width: 0;
+}
+
+/* Nome do jogador dentro do Top Player */
+.ranking-page .top-player .player-name,
+.ranking-page .top-player .top-player-name,
+.ranking-page .top-player .name,
+.ranking-page .top-player .player-name-text,
+.ranking-page .top-player .ranking-player-name,
+.ranking-page .top-player h2,
+.ranking-page .top-player h3 {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  text-align: center;
+}
+
+/* Garante que o conteúdo flexível não ultrapasse o card */
+.ranking-page .top-player > div,
+.ranking-page .top-player .top-player-content {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Em telas menores, mantém o mesmo comportamento */
+@media (max-width: 800px) {
+  .ranking-page .top-player .player-name,
+  .ranking-page .top-player .top-player-name,
+  .ranking-page .top-player .name,
+  .ranking-page .top-player .player-name-text,
+  .ranking-page .top-player .ranking-player-name,
+  .ranking-page .top-player h2,
+  .ranking-page .top-player h3 {
+    max-width: 100%;
+  }
+}
+
+
+/* =========================================================
+   RANKING — TABELA COM MESMA FORMATAÇÃO DAS TEMPORADAS
+   Corrige as células que estavam criando blocos verticais
+   com cores diferentes dentro da mesma linha.
+========================================================= */
+
+/* Remove qualquer fundo/efeito individual das células */
+.ranking-page tbody tr > td {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* A linha inteira recebe o fundo, como .season-player */
+.ranking-page tbody tr {
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+/* Arredondamento das extremidades */
+.ranking-page tbody tr > td:first-child {
+  border-left: 1px solid transparent;
+  border-radius: 8px 0 0 8px;
+}
+
+.ranking-page tbody tr > td:last-child {
+  border-right: 1px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Hover da linha inteira */
+.ranking-page tbody tr:hover {
+  background: linear-gradient(90deg, #171a21, #12151b);
+}
+
+.ranking-page tbody tr:hover > td {
+  background: transparent !important;
+  border-top-color: #292f39;
+  border-bottom-color: #292f39;
+}
+
+.ranking-page tbody tr:hover > td:first-child {
+  border-left-color: #a855f7;
+}
+
+/* =========================================================
+   TOP 3 — UMA ÚNICA FAIXA DE COR POR LINHA
+========================================================= */
+
+/* 1º */
+.ranking-page tbody tr:nth-child(1) {
+  background:
+    linear-gradient(90deg, rgba(234, 179, 8, 0.10), transparent 42%),
+    #151515;
+
+  border: 1px solid rgba(234, 179, 8, 0.18);
+  border-left: 2px solid #eab308;
+  border-radius: 8px;
+}
+
+.ranking-page tbody tr:nth-child(1) > td {
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* 2º */
+.ranking-page tbody tr:nth-child(2) {
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.09), transparent 42%),
+    #12151a;
+
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-left: 2px solid #94a3b8;
+  border-radius: 8px;
+}
+
+.ranking-page tbody tr:nth-child(2) > td {
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* 3º */
+.ranking-page tbody tr:nth-child(3) {
+  background:
+    linear-gradient(90deg, rgba(249, 115, 22, 0.09), transparent 42%),
+    #131416;
+
+  border: 1px solid rgba(249, 115, 22, 0.16);
+  border-left: 2px solid #f97316;
+  border-radius: 8px;
+}
+
+.ranking-page tbody tr:nth-child(3) > td {
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* 4º em diante */
+.ranking-page tbody tr:nth-child(n+4) {
+  background: linear-gradient(90deg, #111419, #0f1217);
+  border: 1px solid transparent;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+}
+
+/* Posição sem alterar o fundo */
+.ranking-page tbody td:first-child {
+  background: transparent !important;
+}
+
+/* Avatar e conteúdo continuam sobre a mesma faixa */
+.ranking-page tbody td img,
+.ranking-page tbody td .player-avatar,
+.ranking-page tbody td .ranking-avatar {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 650px) {
+  .container.season-wrap {
+    padding: 6px;
+    border-radius: 10px;
+  }
+}
+
+
+
+.ranking-page .ranking-table {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  margin: 0;
+  padding: 8px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.07),
+      transparent 30%
+    ),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Se .ranking-table for o elemento TABLE, o acabamento
+   visual fica no próprio bloco sem quebrar a tabela. */
+.ranking-page table.ranking-table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  padding: 8px;
+}
+
+/* O cabeçalho e as linhas continuam dentro do mesmo card */
+.ranking-page .ranking-table thead,
+.ranking-page .ranking-table tbody {
+  position: relative;
+  z-index: 1;
+}
+
+/* Evita que backgrounds individuais das células
+   cubram o fundo externo do ranking-table */
+.ranking-page .ranking-table thead th {
+  background: #111318;
+}
+
+.ranking-page .ranking-table tbody td {
+  background: transparent;
+}
+
+/* Responsivo */
+@media (max-width: 650px) {
+  .ranking-page .ranking-table,
+  .ranking-page table.ranking-table {
+    padding: 6px;
+    border-radius: 10px;
+  }
+}
+
+
+/* =========================================================
+   RANKING — .ranking-table COM O ACABAMENTO DO .season-wrap
+   NÃO ALTERA .container.season-wrap
+========================================================= */
+
+.ranking-page .ranking-table {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 8px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.07),
+      transparent 30%
+    ),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Quando .ranking-table for a própria TABLE */
+.ranking-page table.ranking-table {
+  display: table;
+  width: 100%;
+  min-width: 720px;
+  box-sizing: border-box;
+
+  padding: 8px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 58, 237, 0.07),
+      transparent 30%
+    ),
+    #0b0d10;
+
+  border: 1px solid #292e38;
+  border-radius: 14px;
+
+  border-collapse: separate;
+  border-spacing: 0 3px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Não deixa as células criarem outro card por cima */
+.ranking-page table.ranking-table tbody td {
+  box-shadow: none;
+}
+
+/* Responsivo somente do Ranking */
+@media (max-width: 650px) {
+  .ranking-page .ranking-table {
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .ranking-page table.ranking-table {
+    padding: 6px;
+    border-radius: 10px;
+  }
+}
+
+
+
+/* =========================================================
+   TEMPORADAS — REMOVER SOMENTE A COROA DO BACKGROUND
+   Mantém todo o restante da tela exatamente como estava.
+========================================================= */
+
+.season-wrap::before {
+  content: none !important;
+  display: none !important;
 }

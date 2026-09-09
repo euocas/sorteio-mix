@@ -515,6 +515,20 @@ if (isset($_SESSION['vacancy_result']) && $_SERVER['REQUEST_METHOD'] === 'GET') 
 
 $todayHistory = readTodayDrawHistory();
 
+$lastDrawTeams = null;
+if (!empty($todayHistory[0]['teams']) && is_array($todayHistory[0]['teams'])) {
+  $lastDrawTeams = [
+    'team1' => array_values(array_map(
+      static fn(array $player): string => (string) ($player['name'] ?? ''),
+      is_array($todayHistory[0]['teams']['team1'] ?? null) ? $todayHistory[0]['teams']['team1'] : []
+    )),
+    'team2' => array_values(array_map(
+      static fn(array $player): string => (string) ($player['name'] ?? ''),
+      is_array($todayHistory[0]['teams']['team2'] ?? null) ? $todayHistory[0]['teams']['team2'] : []
+    )),
+  ];
+}
+
 $rankColors = [
   1 => ['bg' => '#e8f5e9', 'border' => '#4caf50', 'text' => '#1b5e20', 'badge' => '#4caf50'],
   2 => ['bg' => '#e3f2fd', 'border' => '#2196f3', 'text' => '#0d47a1', 'badge' => '#2196f3'],
@@ -550,8 +564,8 @@ $rankColors = [
         <button type="button" class="btn btn-ghost active" onclick="window.location.href='sorteio.php'">Sorteio</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio_de_mapas.html'">Mapa</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='ao_vivo.php'">Ao Vivo</button>
-        <button type="button" class="btn btn-ghost" onclick="window.location.href='ranking.php'">Ranking</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='historico.php'">Histórico</button>
+        <button type="button" class="btn btn-ghost" onclick="window.location.href='ranking.php'">Ranking</button>
         <button type="button" class="btn btn-ghost" onclick="window.location.href='temporadas.php'">Temporadas</button>
       </nav>
 
@@ -597,6 +611,17 @@ $rankColors = [
           <div class="counter-num"><span id="selCount">0</span> <span id="selLimit">/ 10</span></div>
         </div>
         <div class="draw-actions">
+          <?php if ($lastDrawTeams): ?>
+            <div class="winner-team-control">
+              <label for="winnerTeam">Time vencedor</label>
+              <select id="winnerTeam" class="btn btn-primary winner-team-select" onchange="selectWinnerTeam(this.value)">
+                <option value="">Selecionar time...</option>
+                <option value="team1">Time A</option>
+                <option value="team2">Time B</option>
+              </select>
+            </div>
+          <?php endif; ?>
+
           <div class="vacancy-control" id="vacancyControl" hidden>
             <label for="vacancies">Vagas disponíveis</label>
             <div class="vacancy-stepper">
@@ -672,7 +697,7 @@ $rankColors = [
     <?php endif; ?>
 
     <?php if ($teams): ?>
-      <div class="results-section">
+      <div class="results-section" id="resultado" style="scroll-margin-top: 24px;">
         <h2><?= $teams['mode'] === 'ranking' ? 'Sorteio por Ranking por Pontuação' : 'Sorteio por Ranking' ?></h2>
         <div class="teams-grid">
           <div class="team-card team-1">
@@ -781,6 +806,8 @@ $rankColors = [
     const vacanciesInput = document.getElementById('vacancies');
     const drawDescription = document.getElementById('drawDescription');
     const selLimit = document.getElementById('selLimit');
+    const winnerTeamSelect = document.getElementById('winnerTeam');
+    const lastDrawTeams = <?= json_encode($lastDrawTeams ?? null, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
     let rankingReady = drawModeInput.value !== 'ranking';
     let leaderboardById = new Map();
     let leaderboardPlayers = [];
@@ -1088,6 +1115,32 @@ $rankColors = [
 
     selectDrawMode(drawModeInput.value);
 
+    /*
+     * Após realizar o sorteio, o PHP redireciona para #resultado.
+     * Em vez de deixar o usuário no topo da página, conduzimos
+     * suavemente até o resultado dos times.
+     */
+    function scrollToDrawResult() {
+      const result = document.getElementById('resultado');
+
+      if (!result || window.location.hash !== '#resultado') {
+        return;
+      }
+
+      setTimeout(() => {
+        result.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 120);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', scrollToDrawResult);
+    } else {
+      scrollToDrawResult();
+    }
+
     function filterPlayers(query) {
       const normalize = (str) => str
         .toLowerCase()
@@ -1155,6 +1208,30 @@ $rankColors = [
       }).catch(() => {
         alert('Não consegui avisar a página Ao Vivo (verifique a conexão), mas você pode continuar o sorteio normalmente.');
       });
+    }
+
+    function selectWinnerTeam(teamKey) {
+      if (!lastDrawTeams || !winnerTeamSelect) return;
+
+      // Atalho: limpa a seleção atual e marca os jogadores
+      // pertencentes ao time escolhido no sorteio anterior.
+      const winnerNames = new Set(
+        (lastDrawTeams[teamKey] || []).map(name => normalizePlayerName(name))
+      );
+
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        const label = cb.closest('.player-label');
+        if (!label) return;
+
+        const playerName = normalizePlayerName(label.dataset.playerName || '');
+        cb.checked = winnerNames.has(playerName);
+        label.classList.toggle('checked', cb.checked);
+      });
+
+      document.getElementById('selCount').textContent =
+        document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+      sendLiveSelection();
     }
 
     function updateCounter(checkbox) {
