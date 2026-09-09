@@ -6916,3 +6916,108 @@ header p,
   content: none !important;
   display: none !important;
 }
+
+/* =========================================================
+   TEMPORADAS — DIAGRAMAÇÃO IGUAL À TELA RANKING
+   ---------------------------------------------------------
+   O visual dos componentes é mantido.
+   Aqui corrigimos somente a largura/posicionamento para que
+   a página fique centralizada como o Ranking.
+========================================================= */
+
+.season-wrap {
+  position: relative;
+  width: min(1030px, calc(100% - 40px));
+  max-width: 1030px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 8px 0 45px;
+  box-sizing: border-box;
+}
+
+/* Garante que todos os blocos internos respeitem a largura
+   centralizada do .season-wrap */
+.season-wrap > * {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.season-header {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.season-selector,
+.season-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.season-selector {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.season-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mantém a lista e cada linha limitadas ao card */
+.season-player-list {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.season-player {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* O conteúdo do jogador não pode estourar o card */
+.season-player-name,
+.season-player-rank,
+.season-player-points {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 1100px) {
+  .season-wrap {
+    width: min(1030px, calc(100% - 36px));
+  }
+}
+
+@media (max-width: 900px) {
+  .season-wrap {
+    width: calc(100% - 36px);
+    max-width: none;
+  }
+}
+
+@media (max-width: 650px) {
+  .season-wrap {
+    width: calc(100% - 28px);
+    max-width: none;
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .season-wrap {
+    width: calc(100% - 20px);
+  }
+}
