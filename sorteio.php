@@ -15,9 +15,9 @@ $players = [
     ['name' => 'DNLZIN'],
     ['name' => 'PDZIKA'],
     ['name' => 'JAMMER'],
-],
+  ],
 
-2 => [
+  2 => [
     ['name' => 'BAIANO'],
     ['name' => 'POWERZIN'],
     ['name' => 'LEOZOX'],
@@ -25,18 +25,18 @@ $players = [
     ['name' => 'TODDY'],
     ['name' => 'RAZEC'],
     ['name' => 'COMPLETE 2'],
-],
+  ],
 
-3 => [
+  3 => [
     ['name' => 'SCHAUSS'],
     ['name' => 'JONAS'],
     ['name' => 'MAKAROV'],
     ['name' => 'GRIMM'],
     ['name' => 'JOTAV', 'lookup' => 'BOY MAGUINHO'],
     ['name' => 'COMPLETE 3'],
-],
+  ],
 
-4 => [
+  4 => [
     ['name' => 'JV (PUTIFERO)'],
     ['name' => 'PIXELCOPATA'],
     ['name' => 'FALKES'],
@@ -45,9 +45,9 @@ $players = [
     ['name' => 'SIMO'],
     ['name' => 'MATHEURO'],
 
-],
+  ],
 
-5 => [
+  5 => [
     ['name' => 'PESCADOR'],
     ['name' => 'LULA', 'lookup' => 'https://www.twitch.tv/objecctt'],
     ['name' => 'MARKEZ'],
@@ -55,7 +55,7 @@ $players = [
     ['name' => 'PANCO'],
     ['name' => 'RONY. RUIM'],
     ['name' => 'COMPLETE 5'],
-]
+  ]
 ];
 
 foreach ($players as &$rankList) {
@@ -531,11 +531,18 @@ $rankColors = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sorteio de Times</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="src/icon.png">
+
 </head>
 
 <body>
+
   <div class="container">
     <header class="site-header">
+
+      <!-- LOGO TOPO -->
+
+      <img src="src/logo.png" alt="Mix da Família GC" class="logo-topo">
 
       <!-- MENU EM ABAS -->
       <nav class="tabs">
@@ -607,7 +614,7 @@ $rankColors = [
       </div>
 
       <div class="ranks-grid" id="manualRanksGrid">
-          <?php foreach ($players as $rank => $rankPlayers): ?>
+        <?php foreach ($players as $rank => $rankPlayers): ?>
           <div class="rank-card rank-<?= $rank ?>">
             <div class="rank-header">
               <span><?= $rankLabels[$rank]['icon'] ?></span>
@@ -824,9 +831,9 @@ $rankColors = [
           if (distance < closestDistance) {
             closestMatch = player;
             closestDistance = distance;
-            closestThreshold = needle.length >= 3 && candidateName.slice(0, 3) === needle.slice(0, 3)
-              ? 3
-              : (needle.length >= 2 && candidateName.slice(0, 2) === needle.slice(0, 2) ? 2 : 1);
+            closestThreshold = needle.length >= 3 && candidateName.slice(0, 3) === needle.slice(0, 3) ?
+              3 :
+              (needle.length >= 2 && candidateName.slice(0, 2) === needle.slice(0, 2) ? 2 : 1);
             closestIsUnique = true;
           } else if (distance === closestDistance) {
             closestIsUnique = false;
@@ -838,7 +845,9 @@ $rankColors = [
     }
 
     function levenshteinDistance(left, right) {
-      const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+      const row = Array.from({
+        length: right.length + 1
+      }, (_, index) => index);
       for (let leftIndex = 1; leftIndex <= left.length; leftIndex++) {
         let previous = row[0];
         row[0] = leftIndex;
@@ -858,9 +867,9 @@ $rankColors = [
     function updateRankingPlayerList() {
       document.querySelectorAll('.player-label').forEach(label => {
         const configuredId = label.dataset.playerId;
-        const player = configuredId
-          ? leaderboardById.get(configuredId)
-          : findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
+        const player = configuredId ?
+          leaderboardById.get(configuredId) :
+          findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
         const avatar = label.querySelector('.player-list-avatar');
         const name = label.querySelector('.player-name-text');
         const points = label.querySelector('.player-points');
@@ -911,9 +920,9 @@ $rankColors = [
     }
 
     function rankingPlayerForLabel(label) {
-      return label.dataset.playerId
-        ? leaderboardById.get(label.dataset.playerId)
-        : findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
+      return label.dataset.playerId ?
+        leaderboardById.get(label.dataset.playerId) :
+        findRankingPlayerByName(label.dataset.playerLookup || label.dataset.playerName);
     }
 
     function renderPointRanking() {
@@ -962,9 +971,9 @@ $rankColors = [
       vacancyControl.hidden = !vacancyMode;
       vacancyControl.style.display = vacancyMode ? 'flex' : 'none';
       selLimit.textContent = vacancyMode ? '/ livre' : '/ 10';
-      drawDescription.textContent = vacancyMode
-        ? 'Selecione os jogadores que concorrem às vagas e deixe o sistema sortear quem entra.'
-        : 'Selecione 10 jogadores para gerar dois times equilibrados';
+      drawDescription.textContent = vacancyMode ?
+        'Selecione os jogadores que concorrem às vagas e deixe o sistema sortear quem entra.' :
+        'Selecione 10 jogadores para gerar dois times equilibrados';
       sortSubmit.textContent = vacancyMode ? 'Sortear Jogadores' : 'Sortear Times';
 
       if (drawModeInput.value === 'ranking') {
@@ -1002,8 +1011,8 @@ $rankColors = [
 
         leaderboardById = new Map(
           leaderboard
-            .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
-            .map(player => [String(player.id), player])
+          .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
+          .map(player => [String(player.id), player])
         );
         leaderboardPlayers = leaderboard;
         updateRankingPlayerList();
@@ -1023,7 +1032,9 @@ $rankColors = [
       try {
         const response = await fetch('ranking.php?api=1', {
           cache: 'no-store',
-          headers: { 'Accept': 'application/json' }
+          headers: {
+            'Accept': 'application/json'
+          }
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -1031,8 +1042,8 @@ $rankColors = [
         const leaderboard = Array.isArray(data) ? data : (data.players || data.leaderboard || []);
         leaderboardById = new Map(
           leaderboard
-            .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
-            .map(player => [String(player.id), player])
+          .filter(player => player && player.id !== null && player.id !== undefined && player.id !== '')
+          .map(player => [String(player.id), player])
         );
         leaderboardPlayers = leaderboard;
         updateRankingPlayerList();

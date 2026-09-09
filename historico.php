@@ -21,6 +21,7 @@ if (file_exists($historyFile)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Histórico de Sorteios</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="src/icon.png">
 </head>
 
 <body class="history-page">
@@ -28,6 +29,10 @@ if (file_exists($historyFile)) {
   <div class="container">
 
     <header class="site-header">
+
+    <!-- LOGO TOPO -->
+
+      <img src="src/logo.png" alt="Mix da Família GC" class="logo-topo">
 
       <nav class="tabs">
         <button type="button" class="btn btn-ghost" onclick="window.location.href='index.html'">Home</button>

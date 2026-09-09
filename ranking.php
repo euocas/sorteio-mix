@@ -21,6 +21,7 @@ if (isset($_GET['api'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ranking</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="src/icon.png">
 
     <style>
         /* =========================================================
@@ -316,6 +317,10 @@ if (isset($_GET['api'])) {
     <div class="container ranking-wrap">
 
         <header class="ranking-header site-header">
+
+            <!-- LOGO TOPO -->
+
+      <img src="src/logo.png" alt="Mix da Família GC" class="logo-topo">
             <nav class="tabs">
                 <button type="button" class="btn btn-ghost" onclick="window.location.href='index.html'">Home</button>
                 <button type="button" class="btn btn-ghost" onclick="window.location.href='sorteio.php'">Sorteio</button>
@@ -330,6 +335,7 @@ if (isset($_GET['api'])) {
             <p class="ranking-subtitle">Pontuação acumulada dos jogadores registrados no servidor.</p>
             <div id="rankingStatus" class="ranking-status">Conectando ao servidor...</div>
         </header>
+
 
         <section id="topCard" class="top-card" aria-label="Top 3 jogadores"></section>
 

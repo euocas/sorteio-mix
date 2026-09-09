@@ -17,9 +17,14 @@ $selectedSeason = $selectedKey !== null ? $seasons[$selectedKey] : null;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Temporadas Passadas</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="src/icon.png">
 </head>
 
 <body class="season-page">
+  <!-- LOGO TOPO -->
+
+      <img src="src/logo.png" alt="Mix da Família GC" class="logo-topo">
+      
   <div class="container season-wrap">
     <header class="site-header season-header">
       <nav class="tabs">

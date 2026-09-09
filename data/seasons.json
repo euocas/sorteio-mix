@@ -5,11 +5,23 @@
         "year": 2026,
         "month": 9,
         "created_at": "2026-09-06T08:48:52+00:00",
-        "updated_at": "2026-09-08T17:01:42+00:00",
+        "updated_at": "2026-09-09T00:07:36+00:00",
         "closed": false,
         "players": [
             {
                 "position": 1,
+                "id": "76561198000147200",
+                "name": "max The Wizard",
+                "avatar": "https://avatars.steamstatic.com/8abe8a5c30e7a09c663b881d2b7b2e4217a819c4_full.jpg",
+                "rank": "Global Elite",
+                "points": 13419,
+                "kills": 551,
+                "deaths": 537,
+                "headshots": 257,
+                "hs_pct": 47
+            },
+            {
+                "position": 2,
                 "id": "76561199679282192",
                 "name": "Kvaratskhelia",
                 "avatar": "https://avatars.steamstatic.com/a0de9bc9fc514ba2b8a861c4eb87be68ca7c751b_full.jpg",
@@ -21,40 +33,28 @@
                 "hs_pct": 52
             },
             {
-                "position": 2,
-                "id": "76561198000147200",
-                "name": "max The Wizard",
-                "avatar": "https://avatars.steamstatic.com/8abe8a5c30e7a09c663b881d2b7b2e4217a819c4_full.jpg",
-                "rank": "Global Elite",
-                "points": 12678,
-                "kills": 531,
-                "deaths": 528,
-                "headshots": 249,
-                "hs_pct": 47
-            },
-            {
                 "position": 3,
-                "id": "76561199103146494",
-                "name": "GRIMMMMMMMMMMMMMMMM",
-                "avatar": "https://avatars.steamstatic.com/ee791d86bebe109b27421a313db1028821b125c0_full.jpg",
-                "rank": "Global Elite",
-                "points": 12294,
-                "kills": 462,
-                "deaths": 458,
-                "headshots": 263,
-                "hs_pct": 57
-            },
-            {
-                "position": 4,
                 "id": "76561199078637158",
                 "name": "JAMMMMMMMMMMMMMMMMMMMMMMMMMMMMER",
                 "avatar": "https://avatars.steamstatic.com/37cf1dc1f48ac849fb89a0b11182816609a9e6eb_full.jpg",
                 "rank": "Global Elite",
-                "points": 12184,
-                "kills": 430,
-                "deaths": 329,
-                "headshots": 208,
+                "points": 12816,
+                "kills": 454,
+                "deaths": 344,
+                "headshots": 219,
                 "hs_pct": 48
+            },
+            {
+                "position": 4,
+                "id": "76561199103146494",
+                "name": "GRIMMMMMMMMMMMMMMMM",
+                "avatar": "https://avatars.steamstatic.com/ee791d86bebe109b27421a313db1028821b125c0_full.jpg",
+                "rank": "Global Elite",
+                "points": 12668,
+                "kills": 478,
+                "deaths": 475,
+                "headshots": 270,
+                "hs_pct": 56
             },
             {
                 "position": 5,
@@ -62,14 +62,26 @@
                 "name": "Apk",
                 "avatar": "https://avatars.steamstatic.com/51bb78fd07a616dffa959c285ad0951a7ece4680_full.jpg",
                 "rank": "Global Elite",
-                "points": 11864,
-                "kills": 494,
-                "deaths": 307,
-                "headshots": 264,
+                "points": 12431,
+                "kills": 513,
+                "deaths": 319,
+                "headshots": 273,
                 "hs_pct": 53
             },
             {
                 "position": 6,
+                "id": "76561198731489987",
+                "name": "dnlzin 157",
+                "avatar": "https://avatars.steamstatic.com/52656de224436707eb0e647d02ad1463fdb1a7e4_full.jpg",
+                "rank": "Global Elite",
+                "points": 11897,
+                "kills": 412,
+                "deaths": 263,
+                "headshots": 233,
+                "hs_pct": 57
+            },
+            {
+                "position": 7,
                 "id": "76561199652109305",
                 "name": "✪ KU$H 011",
                 "avatar": "https://avatars.steamstatic.com/9f1466e8296a8fb744c6952706e9abf22f5eef31_full.jpg",
@@ -81,31 +93,43 @@
                 "hs_pct": 35
             },
             {
-                "position": 7,
-                "id": "76561198731489987",
-                "name": "dnlzin 157",
-                "avatar": "https://avatars.steamstatic.com/52656de224436707eb0e647d02ad1463fdb1a7e4_full.jpg",
-                "rank": "Global Elite",
-                "points": 11379,
-                "kills": 393,
-                "deaths": 250,
-                "headshots": 223,
-                "hs_pct": 57
-            },
-            {
                 "position": 8,
                 "id": "76561198814173442",
                 "name": "GUSMA1",
                 "avatar": "https://avatars.steamstatic.com/dc957dfbdb12c247bf650ec10ab9de3fd824d61f_full.jpg",
-                "rank": "Legendary Eagle Master",
-                "points": 8525,
-                "kills": 226,
-                "deaths": 193,
-                "headshots": 113,
+                "rank": "Supreme Master First Class",
+                "points": 8868,
+                "kills": 240,
+                "deaths": 211,
+                "headshots": 120,
                 "hs_pct": 50
             },
             {
                 "position": 9,
+                "id": "76561199532829551",
+                "name": "Powerzin",
+                "avatar": "https://avatars.steamstatic.com/eaa57587a797c79942de65355aa389fdb97fccfd_full.jpg",
+                "rank": "Legendary Eagle Master",
+                "points": 8398,
+                "kills": 292,
+                "deaths": 339,
+                "headshots": 100,
+                "hs_pct": 34
+            },
+            {
+                "position": 10,
+                "id": "76561198790152105",
+                "name": "panco",
+                "avatar": "https://avatars.steamstatic.com/1b49ea83658f3cb2a7cf0d04f7142c1f2f67caf7_full.jpg",
+                "rank": "Legendary Eagle Master",
+                "points": 8227,
+                "kills": 450,
+                "deaths": 646,
+                "headshots": 169,
+                "hs_pct": 38
+            },
+            {
+                "position": 11,
                 "id": "76561198841110758",
                 "name": "pixelcopata",
                 "avatar": "https://avatars.steamstatic.com/df6157c3cae4a459b3a981f2af1b26d8b7fc621f_full.jpg",
@@ -115,30 +139,6 @@
                 "deaths": 431,
                 "headshots": 150,
                 "hs_pct": 51
-            },
-            {
-                "position": 10,
-                "id": "76561198790152105",
-                "name": "panco",
-                "avatar": "https://avatars.steamstatic.com/1b49ea83658f3cb2a7cf0d04f7142c1f2f67caf7_full.jpg",
-                "rank": "Legendary Eagle Master",
-                "points": 8091,
-                "kills": 444,
-                "deaths": 629,
-                "headshots": 168,
-                "hs_pct": 38
-            },
-            {
-                "position": 11,
-                "id": "76561199532829551",
-                "name": "Powerzin",
-                "avatar": "https://avatars.steamstatic.com/eaa57587a797c79942de65355aa389fdb97fccfd_full.jpg",
-                "rank": "Legendary Eagle Master",
-                "points": 7982,
-                "kills": 280,
-                "deaths": 325,
-                "headshots": 96,
-                "hs_pct": 34
             },
             {
                 "position": 12,
@@ -182,11 +182,11 @@
                 "name": "https://www.twitch.tv/objecctt",
                 "avatar": "https://avatars.steamstatic.com/fda65c91fd5a7a3c116ce3d4927335c7a0eb82a7_full.jpg",
                 "rank": "Master Guardian Elite",
-                "points": 6137,
-                "kills": 187,
-                "deaths": 323,
-                "headshots": 58,
-                "hs_pct": 31
+                "points": 6477,
+                "kills": 198,
+                "deaths": 337,
+                "headshots": 60,
+                "hs_pct": 30
             },
             {
                 "position": 16,
@@ -322,6 +322,18 @@
             },
             {
                 "position": 27,
+                "id": "76561199124087097",
+                "name": "0000000",
+                "avatar": "https://avatars.steamstatic.com/c8d2ddb644aa3d636142acf5c9591cd11a5295c4_full.jpg",
+                "rank": "Silver III",
+                "points": 922,
+                "kills": 51,
+                "deaths": 32,
+                "headshots": 28,
+                "hs_pct": 55
+            },
+            {
+                "position": 28,
                 "id": "76561198907178234",
                 "name": "🇫🇲🇱🇬🇨♕ Razec",
                 "avatar": "https://avatars.steamstatic.com/7cb204811fd54055c4075af9981fb2d3c6cf9807_full.jpg",
@@ -331,18 +343,6 @@
                 "deaths": 42,
                 "headshots": 23,
                 "hs_pct": 34
-            },
-            {
-                "position": 28,
-                "id": "76561199124087097",
-                "name": "0000000",
-                "avatar": "https://avatars.steamstatic.com/c8d2ddb644aa3d636142acf5c9591cd11a5295c4_full.jpg",
-                "rank": "Silver II",
-                "points": 861,
-                "kills": 50,
-                "deaths": 31,
-                "headshots": 28,
-                "hs_pct": 56
             },
             {
                 "position": 29,
@@ -382,6 +382,18 @@
             },
             {
                 "position": 32,
+                "id": "76561199582376084",
+                "name": "×͜×ㅤM𝙰𝙻𝙾𝙽𝙴",
+                "avatar": "https://avatars.steamstatic.com/baded1b29814c1848b4b3e38cbec346cc5598cce_full.jpg",
+                "rank": "Silver I",
+                "points": 221,
+                "kills": 3,
+                "deaths": 15,
+                "headshots": 2,
+                "hs_pct": 67
+            },
+            {
+                "position": 33,
                 "id": "76561198799831364",
                 "name": "Vicente",
                 "avatar": "https://avatars.steamstatic.com/137e75ae72602d8580bc78a4ae93a509fd50c18a_full.jpg",
@@ -393,7 +405,7 @@
                 "hs_pct": 40
             },
             {
-                "position": 33,
+                "position": 34,
                 "id": "76561198954801676",
                 "name": "FallenciaWolff SKINS",
                 "avatar": "https://avatars.steamstatic.com/de5cf54884e458027e5b8b6c7d58cdd22e3678f0_full.jpg",

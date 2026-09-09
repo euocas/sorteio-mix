@@ -1278,6 +1278,115 @@ header p {
 }
 
 /* =========================================================
+   LOGO
+========================================================= */
+.logo-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.logo {
+    display: block;
+    width: 800px;
+    height: auto;
+
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+
+    animation: logoEntrada 0.8s ease-out forwards;
+}
+
+/* Brilho passando pelo logo */
+.logo-container::after {
+    animation: brilhoLogo 5s ease-in-out 2s infinite;
+}
+
+/* Entrada */
+@keyframes logoEntrada {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.96);
+        filter: brightness(0.5);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.01);
+        filter: brightness(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* Pequena flutuação */
+@keyframes logoFlutuar {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Reflexo */
+@keyframes brilhoLogo {
+    0% {
+        left: -120%;
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    35% {
+        left: 130%;
+        opacity: 0;
+    }
+
+    100% {
+        left: 130%;
+        opacity: 0;
+    }
+}
+
+/* Respeita usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+    .logo,
+    .logo-container::after {
+        animation: none;
+    }
+
+    .logo {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.topo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-topo {
+    width: 140px;
+    height: auto;
+    display: block;
+    margin: 10px auto 15px;
+    object-fit: contain;
+}
+
+/* =========================================================
    CARD DE MAPA
 ========================================================= */
 
